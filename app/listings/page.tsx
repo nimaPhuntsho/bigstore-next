@@ -2,8 +2,8 @@ import React from "react";
 import { callFetch } from "../util/fetch";
 import { InternalApiSchema } from "../api/v1/products/schema";
 import ProductCard from "@/components/custom/ProductCard";
-import { Grid, Heading, HStack, VStack } from "@chakra-ui/react";
-import next, { Metadata } from "next";
+import { Grid, VStack } from "@chakra-ui/react";
+import { Metadata } from "next";
 import Pagination from "@/components/custom/Pagination";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function Listings({ searchParams }: Props) {
 
   const { data, success, status } = await callFetch({
     method: "GET",
-    endpoint: `http://localhost:3000/api/v1/products?page=${
+    endpoint: `https://bigstore-next.vercel.app/api/v1/products?page=${
       page ? page : 1
     }&limit=${limit ? limit : 10}`,
     schema: InternalApiSchema,
