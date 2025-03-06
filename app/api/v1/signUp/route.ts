@@ -1,9 +1,8 @@
 import { supabase } from "@/app/supabase/supabaseClient";
 import { registerSchema } from "./../../../(auth)/register/registerSchema";
 import { NextRequest, NextResponse } from "next/server";
-import cookie from "cookie";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const parsedBody = registerSchema.parse(body);

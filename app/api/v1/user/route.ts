@@ -1,6 +1,7 @@
 import { supabase } from "@/app/supabase/supabaseClient";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req: NextRequest) {
   const authorization = req.headers.get("authorization");
   console.log(authorization);
 
@@ -18,7 +19,7 @@ export async function GET(req: Request, res: Response) {
   } = await supabase.auth.getUser(polishedToken);
 
   if (error)
-    return Response.json({
+    return NextResponse.json({
       success: false as const,
       message: "access denied",
       data: null,
@@ -26,7 +27,7 @@ export async function GET(req: Request, res: Response) {
 
   console.log(user);
 
-  return Response.json({
+  return NextResponse.json({
     success: true as const,
     message: "user credentials",
     data: user,

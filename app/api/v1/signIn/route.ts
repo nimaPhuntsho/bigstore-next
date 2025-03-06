@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/app/supabase/supabaseServer";
 import { Login } from "./schema";
+import { signInWithEmail } from "./signInWithEmail";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const loginCredentials = await req.json();
   const { email, password } = Login.parse(loginCredentials);
 
@@ -14,19 +15,4 @@ export async function POST(req: NextRequest, res: NextResponse) {
     });
 
   return NextResponse.json({ message: "auth success", success: true as const });
-}
-
-export async function signInWithEmail(email: string, password: string) {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
-
-  if (error) {
-    console.log(error);
-    return { error: error.message };
-  }
-  console.log(data);
-  return { session: data.session };
 }
