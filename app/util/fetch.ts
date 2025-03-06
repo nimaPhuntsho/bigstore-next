@@ -10,7 +10,7 @@ export const callFetch = async <TSchema extends Schema>({
   method: "GET" | "POST" | "DELETE" | "PUT";
   endpoint: string;
   schema: TSchema;
-  body?: Object;
+  body?: object;
   accessToken?: string;
 }): Promise<{
   data?: z.infer<typeof schema>;

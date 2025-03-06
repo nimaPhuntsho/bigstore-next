@@ -1,7 +1,7 @@
 import OrderStatus from "@/components/custom/OrderStatus";
 import { createClient } from "../supabase/supabaseServer";
 
-export default async function () {
+export default async function Orderstatus() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (!data.user) return;

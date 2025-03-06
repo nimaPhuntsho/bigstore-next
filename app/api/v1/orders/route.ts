@@ -3,7 +3,10 @@ import { supabase } from "./../../../supabase/supabaseClient";
 import { OrderSchema } from "./orderSchema";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(
+  req: NextRequest,
+  res: Response
+): Promise<NextResponse> {
   const body = await req.json();
   const parsedOrder = OrderSchema.parse(body);
 

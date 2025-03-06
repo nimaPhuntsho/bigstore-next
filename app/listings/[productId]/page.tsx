@@ -102,6 +102,7 @@ export default async function Product({ params }: Props) {
                   comment={review.comment}
                   date={review.date}
                   rating={review.rating}
+                  key={review.reviewerEmail}
                 />
               ))}
             </VStack>

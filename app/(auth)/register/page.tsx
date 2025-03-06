@@ -1,6 +1,6 @@
 "use client";
 
-import { VStack, Text, Input, Button, Card, Heading } from "@chakra-ui/react";
+import { VStack, Text, Input, Button, Card } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
@@ -10,13 +10,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormError from "@/components/custom/FormError";
 import NewLogo from "@/components/custom/NewLogo";
 import { supabase } from "@/app/supabase/supabaseClient";
-import { redirect, useRouter } from "next/navigation";
-import { callFetch } from "@/app/util/fetch";
-// import { useSession } from "@/app/store /session/session";
-import { SessionSchema, SignUpSessionSchema } from "./zodSchema";
+import { useRouter } from "next/navigation";
 import { useSession } from "@/app/store /session/session";
 import Link from "next/link";
-import { startCase, upperCase } from "lodash";
+import { startCase } from "lodash";
 
 type RegisterType = z.infer<typeof registerSchema>;
 
@@ -45,7 +42,7 @@ const Register = () => {
   }, [password]);
   const router = useRouter();
 
-  const { session, updateSession } = useSession();
+  const { updateSession } = useSession();
 
   const onSubmit: SubmitHandler<RegisterType> = async (signUpData) => {
     try {
@@ -152,7 +149,7 @@ const Register = () => {
                   render={({ field }) => <PasswordInput {...field} />}
                 />
                 <FormError error={errors} field="confirmPassword" />
-                {password && <p>Passwords doesn't match</p>}
+                {password && <p>Passwords doesnt match</p>}
               </VStack>
               <Button type="submit">Sign up</Button>
             </form>
