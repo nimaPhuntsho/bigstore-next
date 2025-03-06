@@ -1,7 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+    optimizePackageImports: ["@chakra-ui/react"],
+  },
+
+  images: {
+    domains: ["cdn.dummyjson.com"], // Add the external domain here
+  },
+  webpack: (config) => {
+    config.cache = {
+      type: "memory", // Use memory cache instead of filesystem
+    };
+    return config;
+  },
 };
 
 export default nextConfig;
