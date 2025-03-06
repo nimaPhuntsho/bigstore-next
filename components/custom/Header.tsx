@@ -7,6 +7,7 @@ import { redirect, usePathname } from "next/navigation";
 import NewLogo from "./NewLogo";
 import { AiOutlineLogin } from "react-icons/ai";
 import { createClient } from "@/app/supabase/supabaseServer";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import AuthUser from "./AuthUser";
 
@@ -35,11 +36,12 @@ export default async function Header() {
       <main>
         <HStack justifyContent="space-between" padding="1rem">
           <NewLogo />
-          <HStack gap="1rem">
+          <HStack display={{ base: "none", sm: "none", md: "flex" }} gap="1rem">
             <Link href="/listings">Products</Link>
             <Link href="/contact">Contact</Link>
             <Link href="/dashboard">Account</Link>
-
+          </HStack>
+          <HStack>
             <Link href="/cart">
               <Cart />
             </Link>
@@ -51,6 +53,11 @@ export default async function Header() {
                 </Icon>
               </Button>
             </Link>
+            <Button display={{ md: "none" }}>
+              <Icon>
+                <GiHamburgerMenu />
+              </Icon>
+            </Button>
           </HStack>
         </HStack>
       </main>
