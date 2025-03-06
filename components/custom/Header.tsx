@@ -10,6 +10,7 @@ import { createClient } from "@/app/supabase/supabaseServer";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 import AuthUser from "./AuthUser";
+import HamburgerMenu from "./HamburgerMenu";
 
 const navLinks = [
   {
@@ -30,11 +31,17 @@ export default async function Header() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
 
+  const toggle = false;
+
   if (!data || !data.user) {
     // console.log(error);
     return (
       <main>
-        <HStack justifyContent="space-between" padding="1rem">
+        <HStack
+          position="relative"
+          justifyContent="space-between"
+          padding="1rem"
+        >
           <NewLogo />
           <HStack display={{ base: "none", sm: "none", md: "flex" }} gap="1rem">
             <Link href="/listings">Products</Link>
@@ -53,11 +60,7 @@ export default async function Header() {
                 </Icon>
               </Button>
             </Link>
-            <Button display={{ md: "none" }}>
-              <Icon>
-                <GiHamburgerMenu />
-              </Icon>
-            </Button>
+            <HamburgerMenu />
           </HStack>
         </HStack>
       </main>
@@ -102,17 +105,6 @@ export default async function Header() {
     <main>
       <HStack padding="1rem" alignItems="center" justifyContent="space-between">
         <NewLogo />
-        {/* <HStack gap="1rem" justifyContent="center" alignItems="center">
-          <Link href="/listings">
-            <Heading size="md"> Products </Heading>
-          </Link>
-          <Link href="/contact">
-            <Heading size="md"> Contact </Heading>
-          </Link>
-          <Link href="/dashboard">
-            <Heading size="md"> Account </Heading>
-          </Link>
-        </HStack> */}
         <HStack>
           <Link href="/cart">
             <Cart />
@@ -120,6 +112,11 @@ export default async function Header() {
           {user ? (
             <HStack>
               <AuthUser userName={user.data.first_name} />
+              <Button display={{ md: "none" }}>
+                <Icon>
+                  <GiHamburgerMenu />
+                </Icon>
+              </Button>
             </HStack>
           ) : (
             <Link href="/login">
