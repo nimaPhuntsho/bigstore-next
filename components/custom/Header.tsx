@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Box, Button, Heading, HStack, VStack, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@chakra-ui/react";
 import Cart from "./Cart";
@@ -11,6 +11,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 import AuthUser from "./AuthUser";
 import HamburgerMenu from "./HamburgerMenu";
+import MainHeader from "./MainHeader";
 
 const navLinks = [
   {
@@ -30,42 +31,7 @@ const navLinks = [
 export default async function Header() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
-
-  const toggle = false;
-
-  if (!data || !data.user) {
-    // console.log(error);
-    return (
-      <main>
-        <HStack
-          position="relative"
-          justifyContent="space-between"
-          padding="1rem"
-        >
-          <NewLogo />
-          <HStack display={{ base: "none", sm: "none", md: "flex" }} gap="1rem">
-            <Link href="/listings">Products</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/dashboard">Account</Link>
-          </HStack>
-          <HStack>
-            <Link href="/cart">
-              <Cart />
-            </Link>
-            <Link href="/login">
-              <Button>
-                Login
-                <Icon>
-                  <AiOutlineLogin />
-                </Icon>
-              </Button>
-            </Link>
-            <HamburgerMenu />
-          </HStack>
-        </HStack>
-      </main>
-    );
-  }
+  if (!data || !data.user) return <MainHeader userName={undefined} />;
 
   if (!data.user) redirect("/login");
 
@@ -75,61 +41,7 @@ export default async function Header() {
     .eq("user_id", data.user.id)
     .single();
 
-  if (!user.data || !user.data.first_name)
-    return (
-      <main>
-        <HStack justifyContent="space-between" padding="1rem">
-          <NewLogo />
-          <HStack gap="1rem">
-            <Link href="/listings">Products</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/dashboard">Account</Link>
+  if (!user.data || !user.data.first_name) return <p>no user</p>;
 
-            <Link href="/cart">
-              <Cart />
-            </Link>
-            <Link href="/login">
-              <Button>
-                Login
-                <Icon>
-                  <AiOutlineLogin />
-                </Icon>
-              </Button>
-            </Link>
-          </HStack>
-        </HStack>
-      </main>
-    );
-
-  return (
-    <main>
-      <HStack padding="1rem" alignItems="center" justifyContent="space-between">
-        <NewLogo />
-        <HStack>
-          <Link href="/cart">
-            <Cart />
-          </Link>
-          {user ? (
-            <HStack>
-              <AuthUser userName={user.data.first_name} />
-              <Button display={{ md: "none" }}>
-                <Icon>
-                  <GiHamburgerMenu />
-                </Icon>
-              </Button>
-            </HStack>
-          ) : (
-            <Link href="/login">
-              <Button>
-                Login
-                <Icon>
-                  <AiOutlineLogin />
-                </Icon>
-              </Button>
-            </Link>
-          )}
-        </HStack>
-      </HStack>
-    </main>
-  );
+  return <MainHeader userName={user.data.first_name} />;
 }

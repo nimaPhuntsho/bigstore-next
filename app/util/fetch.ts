@@ -58,20 +58,28 @@ export const callFetch = async <TSchema extends Schema>({
         },
         body: JSON.stringify(body),
       });
-      const jsonResponse = await response.json();
 
       if (!response.ok) {
-        throw new Error(jsonResponse.message || "Unknown error occurred");
+        return {
+          data: null,
+          success: false as const,
+          status: response.status,
+        };
       }
-
-      console.log(jsonResponse);
+      const jsonResponse = await response.json();
 
       const parsedResponse = schema.safeParse(jsonResponse);
 
-      console.log(parsedResponse);
+      if (!parsedResponse.success) {
+        return {
+          data: null,
+          success: false as const,
+          status: response.status,
+        };
+      }
 
       return {
-        data: parsedResponse,
+        data: parsedResponse.data,
         success: true as const,
         status: response.status,
       };

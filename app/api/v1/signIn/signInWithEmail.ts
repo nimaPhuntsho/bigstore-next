@@ -9,8 +9,8 @@ export async function signInWithEmail(email: string, password: string) {
 
   if (error) {
     console.log(error);
-    return { error: error.message };
+    return { error: error.message, session: null };
   }
   console.log(data);
-  return { session: data.session };
+  return { error: null, session: data.session };
 }

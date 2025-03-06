@@ -1,6 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
-import { VStack, Text, Input, Button, Card, Heading } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import {
+  VStack,
+  Text,
+  Input,
+  Button,
+  Card,
+  Heading,
+  Spinner,
+} from "@chakra-ui/react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
@@ -8,13 +16,23 @@ import { useSession } from "@/app/store /session/session";
 import { useRouter, useSearchParams } from "next/navigation";
 import { registerSchema } from "@/app/(auth)/register/registerSchema";
 import { PasswordInput } from "../ui/password-input";
-import { revalidatePath } from "next/cache";
 import { customRevalidatePath } from "@/app/actions/customRevalidatePath";
+import { development } from "@/mode";
+import { callFetch } from "@/app/util/fetch";
 
 type RegisterSchemaType = z.infer<typeof registerSchema>;
 type LoginType = Pick<RegisterSchemaType, "email" | "password">;
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState<{
+    hasError: boolean;
+    message: string | null;
+  }>({
+    hasError: false,
+    message: "",
+  });
+
   const { register, control, formState, watch, handleSubmit } =
     useForm<LoginType>({
       defaultValues: {
@@ -23,42 +41,56 @@ const Login = () => {
       },
     });
 
-  const { session, updateSession } = useSession();
-  useEffect(() => {
-    // const getUser = async () => {
-    //   const user = await supabase.auth.getUser();
-    //   console.log(user);
-    // };
-    // getUser();
-  }, []);
+  // const { session, updateSession } = useSession();
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
-    const response = await fetch(
-      "https://bigstore-next.vercel.app/api/v1/signIn",
-      {
+    try {
+      setLoading(true);
+      const { mode } = development;
+
+      const { success, data: signInData } = await callFetch({
+        endpoint: `${mode.production}/api/v1/signIn`,
         method: "POST",
-        body: JSON.stringify(data),
+        body: data,
+        schema: z.object({
+          message: z.string(),
+          success: z.boolean(),
+          error: z.string().nullable(),
+        }),
+      });
+
+      console.log(signInData);
+
+      if (!signInData) {
+        return;
       }
-    );
 
-    if (!response.ok) {
-      console.log(response);
-      router.push("/login");
+      if (!signInData.success) {
+        setLoginError((state) => ({
+          ...state,
+          hasError: true,
+          message: signInData.error,
+        }));
+        return;
+      }
+
+      customRevalidatePath("dashboard");
+
+      if (!callbackUrl) {
+        router.push("/dashboard");
+        return;
+      }
+
+      router.push(callbackUrl);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-    console.log(callbackUrl);
-
-    if (!callbackUrl) {
-      customRevalidatePath("/dashboard");
-      router.push("/dashboard");
-
-      return;
-    }
-
-    router.push(callbackUrl);
   };
 
   return (
@@ -86,7 +118,8 @@ const Login = () => {
                   render={({ field }) => <PasswordInput {...field} />}
                 />
               </VStack>
-              <Button type="submit">Login</Button>
+              <Button type="submit">Login {loading && <Spinner />}</Button>
+              {loginError.hasError && <p> {loginError.message} </p>}
               <Link href="/register">
                 <Text>Create an account</Text>
               </Link>
