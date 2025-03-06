@@ -37,10 +37,13 @@ const Login = () => {
   const callbackUrl = searchParams.get("callbackUrl");
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
-    const response = await fetch("http://localhost:3000/api/v1/signIn", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      "https://bigstore-next.vercel.app/api/v1/signIn",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+      }
+    );
 
     if (!response.ok) {
       console.log(response);
