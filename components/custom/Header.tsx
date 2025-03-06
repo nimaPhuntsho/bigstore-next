@@ -7,7 +7,6 @@ import { redirect, usePathname } from "next/navigation";
 import NewLogo from "./NewLogo";
 import { AiOutlineLogin } from "react-icons/ai";
 import { createClient } from "@/app/supabase/supabaseServer";
-import SignOutBtn from "./SignOutBtn";
 
 import AuthUser from "./AuthUser";
 
@@ -96,7 +95,7 @@ export default async function Header() {
     <main>
       <HStack padding="1rem" alignItems="center" justifyContent="space-between">
         <NewLogo />
-        <HStack gap="1rem" justifyContent="center" alignItems="center">
+        {/* <HStack gap="1rem" justifyContent="center" alignItems="center">
           <Link href="/listings">
             <Heading size="md"> Products </Heading>
           </Link>
@@ -106,7 +105,7 @@ export default async function Header() {
           <Link href="/dashboard">
             <Heading size="md"> Account </Heading>
           </Link>
-        </HStack>
+        </HStack> */}
         <HStack>
           <Link href="/cart">
             <Cart />
