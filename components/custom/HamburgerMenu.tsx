@@ -17,7 +17,7 @@ const HamburgerMenu = () => {
   const { open, onToggle } = useDisclosure();
   return (
     <Flex>
-      <Button onClick={onToggle} display={{ md: "none" }}>
+      <Button variant="outline" onClick={onToggle} display={{ md: "none" }}>
         <Icon>{!open ? <GiHamburgerMenu /> : <IoMdClose />}</Icon>
       </Button>
       {open && (
