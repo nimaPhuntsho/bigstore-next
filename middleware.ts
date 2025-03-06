@@ -17,7 +17,11 @@ const setCorsHeaders = (origin: string) => {
 };
 
 export async function middleware(req: NextRequest, res: NextResponse) {
-  const allowedOrigins = ["http://localhost:5175", "http://localhost:3000"];
+  const allowedOrigins = [
+    "http://localhost:5175",
+    "http://localhost:3000",
+    "https://bigstore-next-cnwn-git-main-nimaphuntshos-projects.vercel.app/",
+  ];
   const origin = req.headers.get("Origin");
 
   if (!origin) {
