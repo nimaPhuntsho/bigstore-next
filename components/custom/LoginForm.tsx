@@ -140,12 +140,12 @@ const Login = () => {
                   </VStack>
                 </form>
                 <ResetPasswordDialog />
+                <Link href="/register">
+                  <Text>
+                    Dont have aaccount? <strong>Sign up here</strong>
+                  </Text>
+                </Link>
               </VStack>
-              <Link href="/register">
-                <Text>
-                  Dont have aaccount? <strong>Sign up here</strong>
-                </Text>
-              </Link>
             </Card.Body>
           </Card.Root>
         </Box>

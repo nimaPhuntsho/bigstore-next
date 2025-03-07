@@ -18,9 +18,10 @@ import {
   Text,
   Input,
   HStack,
+  Spinner,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
-import { sendResetPasswordLink } from "@/app/actions/resetPassword";
+import { sendResetPasswordLink } from "@/app/actions/resetPasswordLink";
 interface Props {}
 
 const ResetPasswordDialog = ({}: Props) => {
@@ -28,16 +29,19 @@ const ResetPasswordDialog = ({}: Props) => {
     loading: boolean;
     errorMessage: string;
     error: boolean;
+    success: boolean;
   }>({
-    loading: true,
+    loading: false,
     errorMessage: "",
     error: false,
+    success: false,
   });
   const { register, control, handleSubmit } = useForm<{ email: string }>({
     defaultValues: { email: "" },
   });
   const onSubmit: SubmitHandler<{ email: string }> = async (email) => {
     try {
+      setResetState((state) => ({ ...state, loading: true }));
       const response = await sendResetPasswordLink(email.email);
 
       if (!response.success) {
@@ -51,6 +55,7 @@ const ResetPasswordDialog = ({}: Props) => {
       setResetState((state) => ({
         ...state,
         error: false,
+        success: true,
       }));
     } catch (error) {
       console.log(error);
@@ -59,7 +64,7 @@ const ResetPasswordDialog = ({}: Props) => {
     }
   };
   return (
-    <DialogRoot>
+    <DialogRoot placement={"center"}>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           Reset password
@@ -89,7 +94,8 @@ const ResetPasswordDialog = ({}: Props) => {
                     <Button variant="outline">Cancel</Button>
                   </DialogActionTrigger>
                   <Button type="submit">
-                    {resetState.loading ? "Get Link" : "Link sent"}
+                    {resetState.success ? "link sent" : "Get link"}
+                    {resetState.loading && <Spinner />}
                   </Button>
                 </HStack>
               </VStack>

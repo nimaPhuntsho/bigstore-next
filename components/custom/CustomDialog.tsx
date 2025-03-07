@@ -31,7 +31,7 @@ const CustomDialog = ({
 }: Props) => {
   const [cancelingOrders, setCancelingOrders] = useState(false);
   return (
-    <DialogRoot>
+    <DialogRoot placement="center" size="xs">
       <DialogTrigger asChild>
         <Button variant="solid" size="sm">
           {openDialogTitle}
