@@ -20,7 +20,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
-import resetPassword from "@/app/actions/resetPassword";
+import { sendResetPasswordLink } from "@/app/actions/resetPassword";
 interface Props {}
 
 const ResetPasswordDialog = ({}: Props) => {
@@ -38,7 +38,7 @@ const ResetPasswordDialog = ({}: Props) => {
   });
   const onSubmit: SubmitHandler<{ email: string }> = async (email) => {
     try {
-      const response = await resetPassword(email.email);
+      const response = await sendResetPasswordLink(email.email);
 
       if (!response.success) {
         setResetState((state) => ({

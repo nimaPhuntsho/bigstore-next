@@ -1,12 +1,23 @@
 "use client";
 
-import resetPassword from "@/app/actions/resetPassword";
-import { Button, Heading, VStack, Input } from "@chakra-ui/react";
+import { updateNewPassword } from "@/app/actions/resetPassword";
+import { Button, Heading, VStack, Input, Text } from "@chakra-ui/react";
 
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 
 const ForgotPasswordForm = () => {
+  const [passwordState, setPasswordState] = useState<{
+    loading: boolean;
+    error: boolean;
+    errorMessage: string;
+    incorrect: boolean;
+  }>({
+    loading: true,
+    error: false,
+    errorMessage: "",
+    incorrect: false,
+  });
   const { register, control, handleSubmit } = useForm<{
     newPassword: string;
     confirmPassword: string;
@@ -16,9 +27,19 @@ const ForgotPasswordForm = () => {
   const onSubmit: SubmitHandler<{
     newPassword: string;
     confirmPassword: string;
-  }> = async (passwords) => {
-    // const response = await resetPassword(email.email);
-    // console.log(response);
+  }> = async ({ newPassword, confirmPassword }) => {
+    try {
+      if (newPassword !== confirmPassword) {
+        setPasswordState((state) => ({ ...state, incorrect: true }));
+        return;
+      }
+
+      const response = await updateNewPassword(newPassword);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+    }
   };
   return (
     <>
@@ -41,7 +62,9 @@ const ForgotPasswordForm = () => {
               render={({ field }) => <Input {...field} />}
             />
           </VStack>
-          <Button type="submit"> Update </Button>
+          {passwordState.incorrect && <Text>Passwords doesnt match</Text>}
+
+          <Button type="submit"> Update Password </Button>
         </form>
       </VStack>
     </>

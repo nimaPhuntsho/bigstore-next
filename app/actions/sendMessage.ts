@@ -3,7 +3,7 @@
 import { ContactInputType } from "@/components/custom/ContactForm";
 import { createClient } from "../supabase/supabaseServer";
 
-export default async function (contact: ContactInputType) {
+export default async function sendMessage(contact: ContactInputType) {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("contacts")
