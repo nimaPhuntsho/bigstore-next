@@ -2,114 +2,138 @@
 
 import React, { useState } from "react";
 import {
-  Box,
   Button,
   Heading,
   HStack,
-  Table,
   Text,
   VStack,
   Spinner,
+  Card,
+  Grid,
+  Icon,
 } from "@chakra-ui/react";
 import QuantityCounter from "@/components/custom/QuantityCounter";
-import { useCartStore } from "@/app/store /cart";
+import { CartItemType, useCartStore } from "@/app/store /cart";
 import { placeOrder } from "@/app/actions/placeOrder";
 import { useOrderStatus } from "@/app/store /order-status/orderStatus";
 import { useRouter } from "next/navigation";
+import EmptyCart from "./EmptyCart";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const Cart = () => {
   const { items, increment, decrement, remove, reset } = useCartStore();
   const { updateOrder, orderStatus } = useOrderStatus();
   const router = useRouter();
 
-  const [placingOrder, setPlacingOrder] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [orderId, setOrderId] = useState(0);
+  const [orderState, setOrderState] = useState<{
+    loading: boolean;
+    success: boolean;
+    error: boolean;
+  }>({
+    loading: false,
+    success: false,
+    error: true,
+  });
+
+  const handlePlaceOrder = async (items: CartItemType[]) => {
+    try {
+      setOrderState((state) => ({ ...state, loading: true }));
+      const response = await placeOrder(items);
+      if (!response.data) return;
+      if (response.success) {
+        updateOrder({
+          orderId: response.data,
+          userId: "test",
+          items: items,
+        });
+        reset();
+        router.push("/order-status");
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setOrderState((state) => ({ ...state, loading: false }));
+    }
+  };
 
   return (
     <>
       {items.length >= 1 ? (
         <VStack justifyContent="center" paddingTop="1rem">
-          <Box width="80%">
-            <Table.Root size="sm">
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeader>Sl no</Table.ColumnHeader>
-                  <Table.ColumnHeader>Item</Table.ColumnHeader>
-                  <Table.ColumnHeader>Price</Table.ColumnHeader>
-                  <Table.ColumnHeader>Quantity</Table.ColumnHeader>
-                  <Table.ColumnHeader>Total</Table.ColumnHeader>
-                </Table.Row>
-              </Table.Header>
-              <Table.Body>
+          <Card.Root>
+            <Card.Header>
+              <Heading fontWeight="700">Your cart</Heading>
+            </Card.Header>
+            <Card.Body>
+              <VStack alignItems="stretch" gap="1rem">
                 {items.map((item, index) => (
-                  <Table.Row key={item.id}>
-                    <Table.Cell>{index + 1} </Table.Cell>
-                    <Table.Cell>{item.title} </Table.Cell>
-                    <Table.Cell>{item.price} </Table.Cell>
-                    <Table.Cell>
-                      <QuantityCounter
-                        onIncrement={() => increment(item)}
-                        onDecrement={() => decrement(item)}
-                        quantity={item.quantity}
-                      />
-                    </Table.Cell>
-                    <Table.Cell>
-                      {(item.price * item.quantity).toFixed(2)}
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Text
-                        onClick={() => {
-                          remove(item);
-                        }}
-                        style={{ cursor: "pointer" }}
-                      >
-                        Remove
-                      </Text>
-                    </Table.Cell>
-                  </Table.Row>
+                  <VStack key={item.id} alignItems="stretch">
+                    <Card.Root>
+                      <Card.Body>
+                        <Grid
+                          templateColumns="40% 25% 25% 10%"
+                          alignItems="start"
+                        >
+                          <VStack alignItems="start">
+                            <Text fontWeight="500">
+                              {index + 1}. {item.title}
+                            </Text>
+                            <Text fontWeight="900">$ {item.price} </Text>
+                          </VStack>
+                          <QuantityCounter
+                            onIncrement={() => increment(item)}
+                            onDecrement={() => decrement(item)}
+                            quantity={item.quantity}
+                          />
+                          <Text justifySelf="end">
+                            $ {(item.price * item.quantity).toFixed(2)}
+                          </Text>
+                          <Text
+                            justifySelf="end"
+                            onClick={() => {
+                              remove(item);
+                            }}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <Icon>
+                              <RiDeleteBin6Line />
+                            </Icon>
+                          </Text>
+                        </Grid>
+                      </Card.Body>
+                    </Card.Root>
+                  </VStack>
                 ))}
-              </Table.Body>
-            </Table.Root>
-            <HStack>
-              <Heading size="md">Total</Heading>
-              <Text fontWeight="bolder">
-                $
-                {items
-                  .reduce((accumulator, currentValue) => {
-                    return (
-                      accumulator + currentValue.price * currentValue.quantity
-                    );
-                  }, 0)
-                  .toFixed(2)}
-              </Text>
-            </HStack>
-          </Box>
-          <Button
-            variant="surface"
-            onClick={async () => {
-              setPlacingOrder(true);
-              const response = await placeOrder(items);
-              if (!response.data) return;
-              if (response.success) {
-                setPlacingOrder(false);
-                setSuccess(true);
-                setOrderId(response.data);
-                updateOrder({
-                  orderId: response.data,
-                  userId: "test",
-                  items: items,
-                });
-                reset();
-                router.push("/order-status");
-              }
-            }}
-          >
-            Looks good! Place order {placingOrder && <Spinner />}
-          </Button>
+              </VStack>
+            </Card.Body>
+            <Card.Footer>
+              <VStack width="100%" alignItems="stretch">
+                <HStack justifyContent="space-between">
+                  <Text fontWeight="bolder">Total</Text>
+                  <Text fontWeight="bolder">
+                    $
+                    {items
+                      .reduce((accumulator, currentValue) => {
+                        return (
+                          accumulator +
+                          currentValue.price * currentValue.quantity
+                        );
+                      }, 0)
+                      .toFixed(2)}
+                  </Text>
+                </HStack>
+                <Button onClick={() => handlePlaceOrder(items)}>
+                  Check out {orderState.loading && <Spinner />}
+                </Button>
+              </VStack>
+            </Card.Footer>
+          </Card.Root>
         </VStack>
       ) : (
-        "cart empty"
+        <EmptyCart
+          title="Your cart is empty"
+          content="Looks like you have not added anything to your cart."
+        />
       )}
     </>
   );

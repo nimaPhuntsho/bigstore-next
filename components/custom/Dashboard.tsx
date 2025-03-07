@@ -6,6 +6,7 @@ import { Button, Heading, HStack, Icon, VStack } from "@chakra-ui/react";
 import { signOut } from "@/app/actions/auth";
 import { PiSignOut } from "react-icons/pi";
 import OrderCard, { Order } from "./OrderCard";
+import EmptyCart from "./EmptyCart";
 interface Props {
   userName: string;
   order: {
@@ -18,24 +19,26 @@ interface Props {
 const Dashboard = ({ userName, order }: Props) => {
   return (
     <>
-      <VStack>
-        {/* <HStack width="90%" justifyContent={"space-between"}>
-          <p>Welcome! {userName} </p>
-          <Button size="xs" onClick={() => signOut()}>
-            Sign out
-            <Icon>
-              <PiSignOut />
-            </Icon>
-          </Button>
-        </HStack> */}
+      <VStack
+        width={{
+          base: "100%",
+        }}
+      >
         <VStack
-          padding={"1rem"}
-          alignItems="start"
-          justifyContent="start"
-          width={"100%"}
+          alignItems="stretch"
+          justifyContent="center"
+          width="100%"
+          padding="0 1rem"
         >
           <Heading>Recent order/s</Heading>
-          <OrderCard order={order} />
+          {order.length < 1 ? (
+            <EmptyCart
+              title="You have no order"
+              content="You have not ordered anything"
+            />
+          ) : (
+            <OrderCard order={order} />
+          )}
         </VStack>
       </VStack>
     </>

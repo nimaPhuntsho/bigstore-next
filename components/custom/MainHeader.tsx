@@ -6,7 +6,7 @@ import Link from "next/link";
 import AuthUser from "./AuthUser";
 import HamburgerMenu from "./HamburgerMenu";
 import { AiOutlineLogin } from "react-icons/ai";
-import Cart from "./Cart";
+import Cart from "./CartIcon";
 import { usePathname } from "next/navigation";
 interface Props {
   userName?: string;
@@ -34,11 +34,6 @@ const MainHeader = ({ userName }: Props) => {
             <Link href="/contact">
               <Text fontWeight={pathName === "/contact" ? "900" : "700"}>
                 Contact
-              </Text>
-            </Link>
-            <Link href="/dashboard">
-              <Text fontWeight={pathName === "/dashboard" ? "900" : "700"}>
-                Account
               </Text>
             </Link>
           </HStack>
@@ -80,11 +75,6 @@ const MainHeader = ({ userName }: Props) => {
               <Link href="/contact">
                 <Text fontWeight={pathName === "/contact" ? "900" : "700"}>
                   Contact
-                </Text>
-              </Link>
-              <Link href="/dashboard">
-                <Text fontWeight={pathName === "/dashboard" ? "900" : "700"}>
-                  Account
                 </Text>
               </Link>
             </HStack>

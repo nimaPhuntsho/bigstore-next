@@ -1,6 +1,6 @@
 "use client";
 
-import { VStack, Text, Input, Button, Card } from "@chakra-ui/react";
+import { VStack, Text, Input, Button, Card, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
@@ -9,12 +9,15 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormError from "@/components/custom/FormError";
 import NewLogo from "@/components/custom/NewLogo";
-import { supabase } from "@/app/supabase/supabaseClient";
+
 import { useRouter } from "next/navigation";
 import { useSession } from "@/app/store /session/session";
 import Link from "next/link";
 import { startCase } from "lodash";
 import { registerSchema } from "@/app/(auth)/register/registerSchema";
+import { createClient } from "@/app/supabase/supabaseServer";
+import { createUser } from "@/app/actions/createUser";
+import { signUpUser } from "@/app/actions/signUpUser";
 
 type RegisterType = z.infer<typeof registerSchema>;
 
@@ -38,6 +41,18 @@ const RegisterForm = () => {
   const [password, setPassword] = useState(false);
   const [authError, setAuthError] = useState("");
 
+  const [registerState, setRegisterState] = useState<{
+    loading: boolean;
+    error: boolean;
+    errorMessage: string;
+    success: boolean;
+  }>({
+    loading: false,
+    error: true,
+    errorMessage: "",
+    success: false,
+  });
+
   useEffect(() => {}, [password]);
   const router = useRouter();
 
@@ -45,6 +60,7 @@ const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<RegisterType> = async (signUpData) => {
     try {
+      setRegisterState((state) => ({ ...state, loading: true }));
       const { firstName, lastName, email, password, confirmPassword } =
         signUpData;
       if (
@@ -59,8 +75,14 @@ const RegisterForm = () => {
         password: password,
       });
 
+      console.log(error);
+
       if (!data || error) {
-        setAuthError(error);
+        setRegisterState((state) => ({
+          ...state,
+          error: true,
+          errorMessage: error,
+        }));
         return;
       }
 
@@ -75,24 +97,36 @@ const RegisterForm = () => {
         userId: user.id,
       });
 
+      if (!userData || userError) {
+        setRegisterState((state) => ({
+          ...state,
+          error: true,
+          errorMessage: userError,
+        }));
+      }
+
       console.log(userError);
-      if (!session) return;
-      updateSession(session);
+
       router.push("/dashboard");
     } catch (error) {
       console.log(error);
+    } finally {
+      setRegisterState((state) => ({ ...state, loading: false }));
     }
   };
   return (
     <>
-      <VStack alignItems="center" justifyContent="center" height="100dvh">
+      <VStack alignItems="center" justifyContent="center" minHeight="100dvh">
         <Card.Root
           width={{
             base: "90%",
             sm: "500px",
           }}
           size="lg"
-          padding="1rem"
+          padding={{
+            base: "0",
+            sm: "1.5rem",
+          }}
         >
           <Card.Header>
             <NewLogo />
@@ -108,55 +142,62 @@ const RegisterForm = () => {
               action=""
               onSubmit={handleSubmit(onSubmit)}
             >
-              <VStack alignItems="flex-start">
-                <Text>First Name</Text>
-                <Controller
-                  name="firstName"
-                  control={control}
-                  render={({ field }) => <Input {...field} />}
-                />
-              </VStack>
-              <FormError error={errors} field="firstName" />
-              <VStack alignItems="flex-start">
-                <Text>Last Name</Text>
-                <Controller
-                  name="lastName"
-                  control={control}
-                  render={({ field }) => <Input {...field} />}
-                />
-              </VStack>
-              <FormError error={errors} field="lastName" />
+              <VStack alignItems="stretch" gap="1rem">
+                <VStack alignItems="flex-start">
+                  <Text>First Name</Text>
+                  <Controller
+                    name="firstName"
+                    control={control}
+                    render={({ field }) => <Input {...field} />}
+                  />
+                </VStack>
+                <FormError error={errors} field="firstName" />
+                <VStack alignItems="flex-start">
+                  <Text>Last Name</Text>
+                  <Controller
+                    name="lastName"
+                    control={control}
+                    render={({ field }) => <Input {...field} />}
+                  />
+                </VStack>
+                <FormError error={errors} field="lastName" />
 
-              <VStack alignItems="flex-start">
-                <Text>Email</Text>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => <Input {...field} />}
-                />
-                <FormError error={errors} field="email" />
-              </VStack>
-              <VStack alignItems="flex-start">
-                <Text>Password</Text>
-                <Controller
-                  name="password"
-                  control={control}
-                  render={({ field }) => <PasswordInput {...field} />}
-                />
-                <FormError error={errors} field="password" />
-              </VStack>
+                <VStack alignItems="flex-start">
+                  <Text>Email</Text>
+                  <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => <Input {...field} />}
+                  />
+                  <FormError error={errors} field="email" />
+                </VStack>
+                <VStack alignItems="flex-start">
+                  <Text>Password</Text>
+                  <Controller
+                    name="password"
+                    control={control}
+                    render={({ field }) => <PasswordInput {...field} />}
+                  />
+                  <FormError error={errors} field="password" />
+                </VStack>
 
-              <VStack alignItems="flex-start">
-                <Text>Confirm Password</Text>
-                <Controller
-                  name="confirmPassword"
-                  control={control}
-                  render={({ field }) => <PasswordInput {...field} />}
-                />
-                <FormError error={errors} field="confirmPassword" />
-                {password && <p>Passwords doesnt match</p>}
+                <VStack alignItems="flex-start">
+                  <Text>Confirm Password</Text>
+                  <Controller
+                    name="confirmPassword"
+                    control={control}
+                    render={({ field }) => <PasswordInput {...field} />}
+                  />
+                  <FormError error={errors} field="confirmPassword" />
+                  {password && <Text color="red">Passwords doesnt match</Text>}
+                  {registerState.error && (
+                    <Text color="red"> {registerState.errorMessage} </Text>
+                  )}
+                </VStack>
+                <Button type="submit">
+                  Sign up {registerState.loading && <Spinner />}
+                </Button>
               </VStack>
-              <Button type="submit">Sign up</Button>
             </form>
             <p>{authError}</p>
             <Link href="/login">
@@ -170,61 +211,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-
-async function signUpUser({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) {
-  const { data, error } = await supabase.auth.signUp({
-    email: email,
-    password: password,
-  });
-
-  if (error) {
-    return {
-      error: error.message,
-      data: null,
-    };
-  }
-
-  return {
-    error: null,
-    data: data,
-  };
-}
-
-async function createUser({
-  firstName,
-  lastName,
-  userId,
-  email,
-}: {
-  firstName: string;
-  lastName: string;
-  userId: string;
-  email: string;
-}) {
-  const { data, error } = await supabase
-    .from("users")
-    .insert({
-      first_name: firstName,
-      last_name: lastName,
-      user_id: userId,
-      email: email,
-    })
-    .select();
-
-  if (error)
-    return {
-      error: error.message,
-      data: null,
-    };
-
-  return {
-    error: null,
-    data: data,
-  };
-}

@@ -1,7 +1,7 @@
 import { Box, Button, Heading, HStack, VStack, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@chakra-ui/react";
-import Cart from "./Cart";
+import Cart from "./CartIcon";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
 import NewLogo from "./NewLogo";

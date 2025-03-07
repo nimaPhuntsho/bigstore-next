@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartStore } from "@/app/store /cart";
-import { Button, HStack, Text, Icon } from "@chakra-ui/react";
+import { Button, HStack, Text, Icon, Flex } from "@chakra-ui/react";
 import { IoIosRemove, IoMdAdd } from "react-icons/io";
 
 interface Props {
@@ -13,7 +13,14 @@ interface Props {
 const QuantityCounter = ({ quantity, onIncrement, onDecrement }: Props) => {
   return (
     <>
-      <HStack>
+      <Flex
+        direction={{
+          base: "column-reverse",
+          sm: "row",
+        }}
+        alignItems="center"
+        gap=".5rem"
+      >
         <Button onClick={() => onDecrement()} size="xs" variant="surface">
           <Icon>
             <IoIosRemove />
@@ -25,7 +32,7 @@ const QuantityCounter = ({ quantity, onIncrement, onDecrement }: Props) => {
             <IoMdAdd />
           </Icon>
         </Button>
-      </HStack>
+      </Flex>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Icon, Button, Text } from "@chakra-ui/react";
+import { IconButton, Icon, Button, Text, VStack } from "@chakra-ui/react";
 import {
   MenuContent,
   MenuItem,
@@ -9,6 +9,7 @@ import {
 
 import SignOutBtn from "./SignOutBtn";
 import { IoMdArrowDropdown } from "react-icons/io";
+import Link from "next/link";
 
 interface Props {
   userName: string;
@@ -26,7 +27,12 @@ const AuthUser = ({ userName }: Props) => {
         </Button>
       </MenuTrigger>
       <MenuContent>
-        <MenuItem value="new-txt">
+        <MenuItem value="account">
+          <Link href="/dashboard">
+            <Text> Manage account </Text>
+          </Link>
+        </MenuItem>
+        <MenuItem value="sign-out">
           <SignOutBtn />
         </MenuItem>
       </MenuContent>

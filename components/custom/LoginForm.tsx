@@ -30,10 +30,12 @@ const Login = () => {
     hasError: boolean;
     message: string | null;
     loading: boolean;
+    success: boolean;
   }>({
     hasError: false,
     message: "",
     loading: false,
+    success: false,
   });
 
   const { register, control, formState, watch, handleSubmit } =
@@ -43,8 +45,6 @@ const Login = () => {
         password: "",
       },
     });
-
-  // const { session, updateSession } = useSession();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,7 +56,7 @@ const Login = () => {
       const { mode } = development;
 
       const { success, data: signInData } = await callFetch({
-        endpoint: `${mode.production}/api/v1/signIn`,
+        endpoint: `${mode.local}/api/v1/signIn`,
         method: "POST",
         body: data,
         schema: z.object({
@@ -65,8 +65,6 @@ const Login = () => {
           error: z.string().nullable(),
         }),
       });
-
-      console.log(signInData);
 
       if (!signInData) {
         return;
@@ -80,11 +78,10 @@ const Login = () => {
         }));
         return;
       }
-
       customRevalidatePath("dashboard");
-
-      if (!callbackUrl) {
+      if (!callbackUrl || success) {
         router.push("/dashboard");
+        setLoginState((state) => ({ ...state, loading: false }));
         return;
       }
 

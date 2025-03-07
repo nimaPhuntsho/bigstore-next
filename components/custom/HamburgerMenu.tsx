@@ -25,27 +25,23 @@ const HamburgerMenu = () => {
           display={{ base: "flex", md: "none" }}
           position="absolute"
           top="100%"
-          left="0"
+          right="0"
           bgColor="#212121"
           width="100%"
           zIndex="1"
           color={"white"}
-          alignItems="stretch"
+          alignItems="center"
+          borderRadius="10px"
         >
           <Link onClick={onToggle} href="/listings">
-            <Text padding="1rem" _hover={{ bg: "#3D3D3D" }} fontWeight={600}>
+            <Text padding=".5rem" fontWeight={600}>
               Products
             </Text>
           </Link>
 
           <Link onClick={onToggle} href="/contact">
-            <Text padding="1rem" _hover={{ bg: "#3D3D3D" }} fontWeight={600}>
+            <Text padding=".5rem" fontWeight={600}>
               Contact
-            </Text>
-          </Link>
-          <Link onClick={onToggle} href="/dashboard">
-            <Text padding="1rem" _hover={{ bg: "#3D3D3D" }} fontWeight={600}>
-              Account
             </Text>
           </Link>
         </VStack>
