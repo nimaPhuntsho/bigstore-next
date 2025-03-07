@@ -8,5 +8,9 @@ export default async function Login() {
 
   if (data.user) redirect("/dashboard");
 
-  return <LoginForm />;
+  return (
+    <>
+      <LoginForm />
+    </>
+  );
 }
