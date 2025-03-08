@@ -1,6 +1,14 @@
 "use client";
 
-import { VStack, Text, Input, Button, Card, Spinner } from "@chakra-ui/react";
+import {
+  VStack,
+  Text,
+  Input,
+  Button,
+  Card,
+  Spinner,
+  HStack,
+} from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
@@ -25,7 +33,7 @@ const RegisterForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     reset,
   } = useForm<RegisterType>({
     defaultValues: {
@@ -122,15 +130,13 @@ const RegisterForm = () => {
             base: "90%",
             sm: "500px",
           }}
-          size="lg"
-          padding={{
-            base: "0",
-            sm: "1.5rem",
+          p={{
+            base: "0rem",
+            sm: ".5rem",
           }}
         >
           <Card.Header>
-            <NewLogo />
-            <Card.Title>Login</Card.Title>
+            <Card.Title fontWeight={700}>Sign up</Card.Title>
           </Card.Header>
           <Card.Body>
             <form
@@ -149,6 +155,9 @@ const RegisterForm = () => {
                     name="firstName"
                     control={control}
                     render={({ field }) => <Input {...field} />}
+                    rules={{
+                      required: "First name is required",
+                    }}
                   />
                 </VStack>
                 <FormError error={errors} field="firstName" />
@@ -158,6 +167,9 @@ const RegisterForm = () => {
                     name="lastName"
                     control={control}
                     render={({ field }) => <Input {...field} />}
+                    rules={{
+                      required: "Last name is required",
+                    }}
                   />
                 </VStack>
                 <FormError error={errors} field="lastName" />
@@ -168,6 +180,9 @@ const RegisterForm = () => {
                     name="email"
                     control={control}
                     render={({ field }) => <Input {...field} />}
+                    rules={{
+                      required: "Email name is required",
+                    }}
                   />
                   <FormError error={errors} field="email" />
                 </VStack>
@@ -177,6 +192,9 @@ const RegisterForm = () => {
                     name="password"
                     control={control}
                     render={({ field }) => <PasswordInput {...field} />}
+                    rules={{
+                      required: "Password  is required",
+                    }}
                   />
                   <FormError error={errors} field="password" />
                 </VStack>
@@ -187,6 +205,9 @@ const RegisterForm = () => {
                     name="confirmPassword"
                     control={control}
                     render={({ field }) => <PasswordInput {...field} />}
+                    rules={{
+                      required: "Password confirmation is required",
+                    }}
                   />
                   <FormError error={errors} field="confirmPassword" />
                   {password && <Text color="red">Passwords doesnt match</Text>}
@@ -194,15 +215,32 @@ const RegisterForm = () => {
                     <Text color="red"> {registerState.errorMessage} </Text>
                   )}
                 </VStack>
-                <Button type="submit">
+                <Button
+                  _active={{
+                    bgColor: "#F7F7F7",
+                    color: "black",
+                    transform: "scale(0.95)",
+                  }}
+                  transition="all .1s ease-in-out"
+                  fontWeight="bold"
+                  type="submit"
+                  disabled={!isValid}
+                >
                   Sign up {registerState.loading && <Spinner />}
                 </Button>
               </VStack>
+              <p>{authError}</p>
+              <Link href="/login">
+                <Text
+                  _active={{
+                    textDecoration: "underline",
+                  }}
+                  fontWeight={600}
+                >
+                  Already have an account ?
+                </Text>
+              </Link>
             </form>
-            <p>{authError}</p>
-            <Link href="/login">
-              <Text>Already have an account ?</Text>
-            </Link>
           </Card.Body>
         </Card.Root>
       </VStack>

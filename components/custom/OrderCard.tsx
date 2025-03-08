@@ -72,15 +72,13 @@ const OrderCard = ({ order }: Props) => {
   if (!data || !data.data?.products) return;
 
   async function handleCancelOrder(orderId: number) {
-    setCancelingOrders((state) => ({ ...state, [orderId]: true }));
     try {
+      setCancelingOrders((state) => ({ ...state, [orderId]: true }));
       const response = await cancelOrder(orderId);
     } catch (error) {
-      console.log(error);
-    } finally {
       setCancelingOrders((state) => ({ ...state, [orderId]: false }));
+      console.log(error);
     }
-
     return true;
   }
 
@@ -135,18 +133,6 @@ const OrderCard = ({ order }: Props) => {
             </VStack>
           </Card.Body>
           <Card.Footer>
-            {/* <Button
-              variant={"solid"}
-              onClick={() => {
-                handleCancelOrder(item.orderId);
-              }}
-            >
-              Cancel order
-              {cancelingOrders[item.orderId] && <Spinner />}
-              <Icon>
-                <MdDeleteOutline />
-              </Icon>
-            </Button> */}
             <CustomDialog
               openDialogTitle="Cancel order"
               dialogTitle="Cancel confrimation"

@@ -83,7 +83,15 @@ const MainHeader = ({ userName }: Props) => {
                 <Cart />
               </Link>
               <Link href="/login">
-                <Button>
+                <Button
+                  _active={{
+                    bgColor: "#F7F7F7",
+                    color: "black",
+                    transform: "scale(0.95)",
+                  }}
+                  transition="all .1s ease-in-out"
+                  fontWeight="bold"
+                >
                   Login
                   <Icon>
                     <AiOutlineLogin />

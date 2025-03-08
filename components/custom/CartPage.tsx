@@ -11,6 +11,7 @@ import {
   Card,
   Grid,
   Icon,
+  Box,
 } from "@chakra-ui/react";
 import QuantityCounter from "@/components/custom/QuantityCounter";
 import { CartItemType, useCartStore } from "@/app/store /cart";
@@ -19,6 +20,7 @@ import { useOrderStatus } from "@/app/store /order-status/orderStatus";
 import { useRouter } from "next/navigation";
 import EmptyCart from "./EmptyCart";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import Image from "next/image";
 
 const Cart = () => {
   const { items, increment, decrement, remove, reset } = useCartStore();
@@ -47,62 +49,85 @@ const Cart = () => {
           items: items,
         });
         reset();
+        setOrderState((state) => ({ ...state, loading: false }));
         router.push("/order-status");
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      setOrderState((state) => ({ ...state, loading: false }));
     }
   };
 
   return (
     <>
-      {items.length >= 1 ? (
-        <VStack justifyContent="center" paddingTop="1rem">
-          <Card.Root>
+      <VStack
+        width={{
+          base: "90%",
+          sm: "500px",
+        }}
+        justifyContent="center"
+        paddingTop="1rem"
+      >
+        {items.length >= 1 ? (
+          <Card.Root w="100%">
             <Card.Header>
               <Heading fontWeight="700">Your cart</Heading>
             </Card.Header>
             <Card.Body>
-              <VStack alignItems="stretch" gap="1rem">
+              <VStack alignItems="stretch" gap=".5rem">
                 {items.map((item, index) => (
-                  <VStack key={item.id} alignItems="stretch">
-                    <Card.Root>
-                      <Card.Body>
-                        <Grid
-                          templateColumns="40% 25% 25% 10%"
-                          alignItems="start"
-                        >
-                          <VStack alignItems="start">
-                            <Text fontWeight="500">
-                              {index + 1}. {item.title}
-                            </Text>
-                            <Text fontWeight="900">$ {item.price} </Text>
-                          </VStack>
-                          <QuantityCounter
-                            onIncrement={() => increment(item)}
-                            onDecrement={() => decrement(item)}
-                            quantity={item.quantity}
-                          />
-                          <Text justifySelf="end">
-                            $ {(item.price * item.quantity).toFixed(2)}
-                          </Text>
-                          <Text
-                            justifySelf="end"
-                            onClick={() => {
-                              remove(item);
-                            }}
-                            style={{ cursor: "pointer" }}
-                          >
-                            <Icon>
-                              <RiDeleteBin6Line />
-                            </Icon>
-                          </Text>
-                        </Grid>
-                      </Card.Body>
-                    </Card.Root>
-                  </VStack>
+                  <Grid
+                    key={item.id}
+                    templateColumns="repeat(3, 30% 50% 20%)"
+                    alignItems="start"
+                    bgColor="rgb(249, 242, 242)"
+                    borderRadius="10px"
+                    p="1rem"
+                  >
+                    {/* <VStack alignItems="start">
+                      <Text fontWeight="500">
+                        {index + 1}. {item.title}
+                      </Text>
+                      <Text fontWeight="900">$ {item.price} </Text>
+                    </VStack>
+                    <QuantityCounter
+                      onIncrement={() => increment(item)}
+                      onDecrement={() => decrement(item)}
+                      quantity={item.quantity}
+                    />
+                    <Text justifySelf="end">
+                      $ {(item.price * item.quantity).toFixed(2)}
+                    </Text>
+                    <Text
+                      justifySelf="end"
+                      onClick={() => {
+                        remove(item);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Icon>
+                        <RiDeleteBin6Line />
+                      </Icon>
+                    </Text> */}
+
+                    <Image
+                      src={item.thumbnail}
+                      width={60}
+                      height={60}
+                      alt={item.title}
+                    />
+
+                    <VStack alignItems="start">
+                      <Text fontWeight={600}> {item.title} </Text>
+                      <Text>$ {item.price} </Text>
+                    </VStack>
+                    <Box justifySelf="end">
+                      <QuantityCounter
+                        onIncrement={() => increment(item)}
+                        onDecrement={() => decrement(item)}
+                        quantity={item.quantity}
+                      />
+                    </Box>
+                  </Grid>
                 ))}
               </VStack>
             </Card.Body>
@@ -122,19 +147,28 @@ const Cart = () => {
                       .toFixed(2)}
                   </Text>
                 </HStack>
-                <Button onClick={() => handlePlaceOrder(items)}>
+                <Button
+                  _active={{
+                    bgColor: "#F7F7F7",
+                    color: "black",
+                    transform: "scale(0.95)",
+                  }}
+                  transition="all .1s ease-in-out"
+                  fontWeight="bold"
+                  onClick={() => handlePlaceOrder(items)}
+                >
                   Check out {orderState.loading && <Spinner />}
                 </Button>
               </VStack>
             </Card.Footer>
           </Card.Root>
-        </VStack>
-      ) : (
-        <EmptyCart
-          title="Your cart is empty"
-          content="Looks like you have not added anything to your cart."
-        />
-      )}
+        ) : (
+          <EmptyCart
+            title="Your cart is empty"
+            content="Looks like you have not added anything to your cart."
+          />
+        )}
+      </VStack>
     </>
   );
 };

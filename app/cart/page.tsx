@@ -10,14 +10,7 @@ export default async function Cart() {
   return (
     <>
       <VStack>
-        <VStack
-          width={{
-            base: "90%",
-            sm: "500px",
-          }}
-        >
-          <CartPage />
-        </VStack>
+        <CartPage />
       </VStack>
     </>
   );

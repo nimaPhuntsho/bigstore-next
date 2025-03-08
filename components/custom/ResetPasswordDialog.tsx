@@ -36,7 +36,9 @@ const ResetPasswordDialog = ({}: Props) => {
     error: false,
     success: false,
   });
-  const { register, control, handleSubmit } = useForm<{ email: string }>({
+  const { register, control, handleSubmit, formState } = useForm<{
+    email: string;
+  }>({
     defaultValues: { email: "" },
   });
   const onSubmit: SubmitHandler<{ email: string }> = async (email) => {
@@ -66,7 +68,7 @@ const ResetPasswordDialog = ({}: Props) => {
   return (
     <DialogRoot placement={"center"}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button fontWeight="bold" variant="outline" size="sm">
           Reset password
         </Button>
       </DialogTrigger>
@@ -87,13 +89,26 @@ const ResetPasswordDialog = ({}: Props) => {
                   name="email"
                   control={control}
                   render={({ field }) => <Input {...field} />}
+                  rules={{
+                    required: "Email is required",
+                  }}
                 />
 
                 <HStack justifyContent="end">
                   <DialogActionTrigger asChild>
                     <Button variant="outline">Cancel</Button>
                   </DialogActionTrigger>
-                  <Button type="submit">
+                  <Button
+                    _active={{
+                      bgColor: "#F7F7F7",
+                      color: "black",
+                      transform: "scale(0.95)",
+                    }}
+                    transition="all .1s ease-in-out"
+                    fontWeight="bold"
+                    type="submit"
+                    disabled={!formState.isValid}
+                  >
                     {resetState.success ? "link sent" : "Get link"}
                     {resetState.loading && <Spinner />}
                   </Button>

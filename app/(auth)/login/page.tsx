@@ -1,5 +1,6 @@
 import { createClient } from "@/app/supabase/supabaseServer";
 import LoginForm from "@/components/custom/LoginForm";
+import { Box, VStack } from "@chakra-ui/react";
 import { redirect } from "next/navigation";
 
 export default async function Login() {
@@ -10,7 +11,19 @@ export default async function Login() {
 
   return (
     <>
-      <LoginForm />
+      <VStack position="relative">
+        <VStack
+          bgImage="url('/images/login-bg.jpg')"
+          bgSize="cover"
+          bgRepeat="no-repeat"
+          width="100%"
+          height="50dvh"
+        ></VStack>
+        <VStack height="50dvh"></VStack>
+        <Box position="absolute" top={0}>
+          <LoginForm />
+        </Box>
+      </VStack>
     </>
   );
 }

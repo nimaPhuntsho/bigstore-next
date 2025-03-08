@@ -56,7 +56,7 @@ const Login = () => {
       const { mode } = development;
 
       const { success, data: signInData } = await callFetch({
-        endpoint: `${mode.production}/api/v1/signIn`,
+        endpoint: `${mode.local}/api/v1/signIn`,
         method: "POST",
         body: data,
         schema: z.object({
@@ -76,20 +76,18 @@ const Login = () => {
           hasError: true,
           message: signInData.error,
         }));
-        return;
-      }
-      customRevalidatePath("dashboard");
-      if (!callbackUrl || success) {
-        router.push("/dashboard");
         setLoginState((state) => ({ ...state, loading: false }));
         return;
       }
-
+      customRevalidatePath("dashboard");
+      if (!callbackUrl) {
+        setLoginState((state) => ({ ...state, loading: false }));
+        router.push("/dashboard");
+        return;
+      }
       router.push(callbackUrl);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoginState((state) => ({ ...state, loading: false }));
     }
   };
 
@@ -98,7 +96,7 @@ const Login = () => {
       <VStack width="100%" height="100dvh" justifyContent="center">
         <Box
           width={{
-            base: "90%",
+            base: "100%",
             sm: "400px",
           }}
         >
@@ -117,6 +115,9 @@ const Login = () => {
                           name="email"
                           control={control}
                           render={({ field }) => <Input {...field} />}
+                          rules={{
+                            required: "Email is required",
+                          }}
                         />
                       </VStack>
                       <VStack alignItems="start" width="100%">
@@ -125,9 +126,22 @@ const Login = () => {
                           name="password"
                           control={control}
                           render={({ field }) => <PasswordInput {...field} />}
+                          rules={{
+                            required: "Password is required",
+                          }}
                         />
                       </VStack>
-                      <Button type="submit">
+                      <Button
+                        _active={{
+                          bgColor: "#F7F7F7",
+                          color: "black",
+                          transform: "scale(0.95)",
+                        }}
+                        transition="all .1s ease-in-out"
+                        fontWeight="bold"
+                        type="submit"
+                        disabled={!formState.isValid}
+                      >
                         Login {loginState.loading && <Spinner />}
                       </Button>
                     </VStack>
@@ -139,7 +153,18 @@ const Login = () => {
                 <ResetPasswordDialog />
                 <Link href="/register">
                   <Text>
-                    Dont have aaccount? <strong>Sign up here</strong>
+                    Dont have an account?
+                    <Text
+                      _active={{
+                        textDecoration: "underline",
+                      }}
+                      transition="all .1s ease-in-out"
+                      fontWeight="bold"
+                      as="span"
+                      ml={1}
+                    >
+                      Sign up here
+                    </Text>
                   </Text>
                 </Link>
               </VStack>
