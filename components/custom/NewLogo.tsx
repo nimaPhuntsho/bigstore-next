@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { SiPrestashop } from "react-icons/si";
 
-const Logo = () => {
+const NewLogo = () => {
   return (
     <HStack>
       <Link href="/">
@@ -19,4 +19,4 @@ const Logo = () => {
   );
 };
 
-export default Logo;
+export default NewLogo;

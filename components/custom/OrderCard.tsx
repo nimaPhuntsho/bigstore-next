@@ -62,86 +62,98 @@ const OrderCard = ({ order }: Props) => {
     queryFn: fetchProducts,
   });
 
-  const [cancelingOrders, setCancelingOrders] = useState<
-    Record<number, boolean>
-  >({});
   useEffect(() => {
     if (!data || !data.data) return;
   }, [data]);
 
   if (!data || !data.data?.products) return;
 
-  async function handleCancelOrder(orderId: number) {
-    try {
-      setCancelingOrders((state) => ({ ...state, [orderId]: true }));
-      const response = await cancelOrder(orderId);
-    } catch (error) {
-      setCancelingOrders((state) => ({ ...state, [orderId]: false }));
-      console.log(error);
-    }
+  async function handleOnCancel(orderId: number) {
+    const response = await cancelOrder(orderId);
+    // console.log(response);
+
+    if (!response.success) return false;
     return true;
   }
 
   return (
     <>
-      {order.map((item) => (
-        <Card.Root key={item.createdAt}>
-          <Card.Body>
-            <HStack alignItems="start" flexWrap="wrap" gap="2rem">
-              <VStack flex={1} alignItems="start">
-                <Heading>Order ID</Heading>
-                <Text> {item.orderId} </Text>
-              </VStack>
-              <VStack flex={1} alignItems="start">
-                <Heading>Date</Heading>
-                <Text> {readibleDate(item.createdAt!.toString())} </Text>
-              </VStack>
-
-              <VStack flex={1} alignItems="start">
-                <Heading>Total</Heading>
-                <Text>{getTotal(item.items).toFixed(2)}</Text>
-              </VStack>
-            </HStack>
-            <VStack width={"100%"} alignItems="start">
-              <Heading>Item/s</Heading>
-              {item.items.map((item) => {
-                if (!data || !data.data?.products) return;
-                const product = getProduct(item.product_id, data.data);
-
-                if (!product) return;
-
-                return (
-                  <VStack
-                    alignItems={"stretch"}
-                    key={item.price}
-                    width={"100%"}
-                  >
-                    <Box
-                      bgColor={"lightblue"}
-                      padding={".5rem"}
-                      borderRadius={"10px"}
-                      fontSize={".9rem"}
-                      width={"100%"}
-                    >
-                      <Text fontWeight={"700"}>{product.brand}</Text>
-                      <Text>$ {product.price}</Text>
-                      <Text>Quantity : {item.quantity}</Text>
-                    </Box>
+      <VStack width="100%" alignItems="start">
+        {order.map((item) => (
+          <Card.Root key={item.createdAt}>
+            <Card.Body>
+              <VStack alignItems="start">
+                <HStack
+                  alignItems="start"
+                  justifyContent="space-between"
+                  flexWrap="wrap"
+                  gap="2rem"
+                  width="100%"
+                >
+                  <VStack flex={1} alignItems="start">
+                    <Heading fontWeight={700} size="md">
+                      Order Number
+                    </Heading>
+                    <Text> {item.orderId} </Text>
                   </VStack>
-                );
-              })}
-            </VStack>
-          </Card.Body>
-          <Card.Footer>
-            <CustomDialog
-              openDialogTitle="Cancel order"
-              dialogTitle="Cancel confrimation"
-              dialogBody="You are about to cancel your order"
-              onCancel={async () => await handleCancelOrder(item.orderId)}
-            />
-          </Card.Footer>
-        </Card.Root>
-      ))}
+                  <VStack flex={1} alignItems="start">
+                    <Heading fontWeight={700} size="md">
+                      Date
+                    </Heading>
+                    <Text> {readibleDate(item.createdAt!.toString())} </Text>
+                  </VStack>
+
+                  <VStack flex={1} alignItems="start">
+                    <Heading fontWeight={700} size="md">
+                      Total
+                    </Heading>
+                    <Text>{getTotal(item.items).toFixed(2)}</Text>
+                  </VStack>
+                </HStack>
+                <VStack width={"100%"} alignItems="start">
+                  <Heading fontWeight={700} size="md">
+                    Item/s
+                  </Heading>
+                  {item.items.map((item) => {
+                    if (!data || !data.data?.products) return;
+                    const product = getProduct(item.product_id, data.data);
+
+                    if (!product) return;
+
+                    return (
+                      <VStack
+                        alignItems={"stretch"}
+                        key={item.price}
+                        width={"100%"}
+                      >
+                        <Box
+                          bgColor="rgb(241, 235, 235)"
+                          padding={".5rem"}
+                          borderRadius={"10px"}
+                          fontSize={".9rem"}
+                          width={"100%"}
+                        >
+                          <Text fontWeight={"700"}>{product.brand}</Text>
+                          <Text>$ {product.price}</Text>
+                          <Text>Qty : {item.quantity}</Text>
+                        </Box>
+                      </VStack>
+                    );
+                  })}
+                </VStack>
+              </VStack>
+            </Card.Body>
+            <Card.Footer>
+              <CustomDialog
+                openDialogTitle="Cancel order"
+                dialogTitle="Cancel confrimation"
+                dialogBody="You are about to cancel your order"
+                onCancel={async () => await handleOnCancel(item.orderId)}
+              />
+            </Card.Footer>
+          </Card.Root>
+        ))}
+      </VStack>
     </>
   );
 };

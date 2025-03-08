@@ -1,5 +1,6 @@
 "use server";
 
+import { Order } from "./../../components/custom/OrderCard";
 import { revalidatePath } from "next/cache";
 import { createClient } from "../supabase/supabaseServer";
 
@@ -25,7 +26,7 @@ export async function cancelOrder(orderId: number) {
     return {
       success: false as const,
       message: "there was problem canceling the order",
-      data: null,
+      data: firstDeletionError,
     };
 
   const { data: finalDeletion, error: finalDeletionError } = await supabase
@@ -37,7 +38,7 @@ export async function cancelOrder(orderId: number) {
     return {
       success: false as const,
       message: "there was problem canceling the order",
-      data: null,
+      data: finalDeletionError,
     };
 
   revalidatePath("/dashboard");

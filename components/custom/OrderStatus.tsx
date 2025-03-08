@@ -49,6 +49,8 @@ const OrderStatus = ({ customerName }: Props) => {
         }}
         justifyContent="space-between"
         gap="1rem"
+        p="1rem"
+        minHeight="100dvh"
       >
         <VStack flex={1} alignItems="stretch" gap="2rem">
           <Heading fontWeight={700} size="4xl">
@@ -59,19 +61,35 @@ const OrderStatus = ({ customerName }: Props) => {
             by email once your order has been shipped. Please contact us if you
             have any questions regarding your order.
           </Text>
-          <Link href="/contact">
-            <Button
-              _active={{
-                bgColor: "#F7F7F7",
-                color: "black",
-                transform: "scale(0.95)",
-              }}
-              transition="all .1s ease-in-out"
-              fontWeight="bold"
-            >
-              Contact us
-            </Button>
-          </Link>
+          <HStack>
+            <Link href="/contact">
+              <Button
+                _active={{
+                  bgColor: "#F7F7F7",
+                  color: "black",
+                  transform: "scale(0.95)",
+                }}
+                transition="all .1s ease-in-out"
+                fontWeight="bold"
+              >
+                Contact us
+              </Button>
+            </Link>
+            <Link href="/listings">
+              <Button
+                variant="surface"
+                _active={{
+                  bgColor: "#F7F7F7",
+                  color: "black",
+                  transform: "scale(0.95)",
+                }}
+                transition="all .1s ease-in-out"
+                fontWeight="bold"
+              >
+                Continue shopping
+              </Button>
+            </Link>
+          </HStack>
         </VStack>
         <VStack w="100%" flex={1} alignItems="start">
           <Heading size="lg"> Order Summary</Heading>

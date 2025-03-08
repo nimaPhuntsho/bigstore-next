@@ -10,31 +10,23 @@ interface Props {
 const EmptyCart = ({ title, content }: Props) => {
   return (
     <>
-      <VStack>
-        <VStack
-          width={{
-            base: "80%",
-            sm: "300px",
-          }}
-          alignItems="center"
-        >
-          <Heading size="md"> {title} </Heading>
-          <Image src="/cart.png" width={200} height={200} alt="cart" />
-          <Text textAlign="center">{content}</Text>
-          <Link href="/listings">
-            <Button
-              _active={{
-                bgColor: "#F7F7F7",
-                color: "black",
-                transform: "scale(0.95)",
-              }}
-              transition="all .1s ease-in-out"
-              fontWeight="bold"
-            >
-              Shop our products
-            </Button>
-          </Link>
-        </VStack>
+      <VStack width="100%" h="100dvh" alignItems="center">
+        <Heading size="md"> {title} </Heading>
+        <Image src="/cart.png" width={200} height={200} alt="cart" />
+        <Text textAlign="center">{content}</Text>
+        <Link href="/listings">
+          <Button
+            _active={{
+              bgColor: "#F7F7F7",
+              color: "black",
+              transform: "scale(0.95)",
+            }}
+            transition="all .1s ease-in-out"
+            fontWeight="bold"
+          >
+            Shop our products
+          </Button>
+        </Link>
       </VStack>
     </>
   );

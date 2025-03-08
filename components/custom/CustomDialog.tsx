@@ -33,7 +33,7 @@ const CustomDialog = ({
   return (
     <DialogRoot placement="center" size="xs">
       <DialogTrigger asChild>
-        <Button variant="solid" size="sm">
+        <Button variant="solid">
           {openDialogTitle}
           <Icon>
             <MdDeleteOutline />
@@ -55,7 +55,7 @@ const CustomDialog = ({
             onClick={async () => {
               setCancelingOrders(true);
               const response = await onCancel();
-              if (response) setCancelingOrders(false);
+              setCancelingOrders(response);
             }}
           >
             Cancel {cancelingOrders && <Spinner />}

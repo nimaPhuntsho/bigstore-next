@@ -23,6 +23,7 @@ const MainHeader = ({ userName }: Props) => {
           padding="1rem"
           alignItems="center"
           justifyContent="space-between"
+          width="100%"
         >
           <NewLogo />
           <HStack display={{ base: "none", md: "flex" }}>
@@ -64,6 +65,7 @@ const MainHeader = ({ userName }: Props) => {
             position="relative"
             justifyContent="space-between"
             padding="1rem"
+            width="100%"
           >
             <NewLogo />
             <HStack display={{ base: "none", md: "flex" }}>

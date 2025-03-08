@@ -23,11 +23,12 @@ const Dashboard = ({ userName, order }: Props) => {
         width={{
           base: "100%",
         }}
+        alignItems="start"
       >
         <VStack
-          alignItems="stretch"
-          justifyContent="center"
           width="100%"
+          alignItems="start"
+          justifyContent="center"
           padding="0 1rem"
         >
           <Heading>Recent order/s</Heading>
