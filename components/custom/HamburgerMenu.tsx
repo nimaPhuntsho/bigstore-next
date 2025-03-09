@@ -18,7 +18,7 @@ interface Props {
   userId: string;
 }
 
-const HamburgerMenu = () => {
+const HamburgerMenu = ({ userId }: Props) => {
   const { open, onToggle } = useDisclosure();
   return (
     <Flex>
@@ -71,7 +71,7 @@ const HamburgerMenu = () => {
                 Contact
               </Text>
             </Link>
-            <Link onClick={onToggle} href={`/dashboard/${"userId"}`}>
+            <Link onClick={onToggle} href={`/dashboard/${userId}`}>
               <Text
                 _active={{
                   textDecoration: "underline",
