@@ -5,14 +5,15 @@ import NewLogo from "./NewLogo";
 import Link from "next/link";
 import AuthUser from "./AuthUser";
 import HamburgerMenu from "./HamburgerMenu";
-import { AiOutlineLogin } from "react-icons/ai";
 import Cart from "./CartIcon";
+import { HiLogout } from "react-icons/hi";
 import { usePathname } from "next/navigation";
 interface Props {
-  userName?: string;
+  userName: string;
+  userId: string;
 }
 
-const MainHeader = ({ userName }: Props) => {
+const MainHeader = ({ userName, userId }: Props) => {
   const pathName = usePathname();
 
   return (
@@ -38,13 +39,13 @@ const MainHeader = ({ userName }: Props) => {
               </Text>
             </Link>
           </HStack>
-          <HStack>
+          <HStack gap={".3rem"}>
             <Link href="/cart">
               <Cart />
             </Link>
             {userName ? (
               <HStack>
-                <AuthUser userName={userName} />
+                <AuthUser userName={userName} userId={userId} />
                 <HamburgerMenu />
               </HStack>
             ) : (
@@ -52,7 +53,7 @@ const MainHeader = ({ userName }: Props) => {
                 <Button>
                   Login
                   <Icon>
-                    <AiOutlineLogin />
+                    <HiLogout />
                   </Icon>
                 </Button>
               </Link>
@@ -80,7 +81,7 @@ const MainHeader = ({ userName }: Props) => {
                 </Text>
               </Link>
             </HStack>
-            <HStack gap="1rem">
+            <HStack gap=".3rem">
               <Link href="/cart">
                 <Cart />
               </Link>
@@ -96,7 +97,7 @@ const MainHeader = ({ userName }: Props) => {
                 >
                   Login
                   <Icon>
-                    <AiOutlineLogin />
+                    <HiLogout />
                   </Icon>
                 </Button>
               </Link>

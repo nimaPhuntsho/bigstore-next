@@ -1,12 +1,9 @@
 "use client";
 
 import React from "react";
-import TButton from "./SignOutBtn";
 import { Button, Heading, HStack, Icon, VStack } from "@chakra-ui/react";
-import { signOut } from "@/app/actions/auth";
-import { PiSignOut } from "react-icons/pi";
-import OrderCard, { Order } from "./OrderCard";
-import EmptyCart from "./EmptyCart";
+import { Order } from "./OrderCard";
+
 interface Props {
   userName: string;
   order: {
@@ -25,21 +22,8 @@ const Dashboard = ({ userName, order }: Props) => {
         }}
         alignItems="start"
       >
-        <VStack
-          width="100%"
-          alignItems="start"
-          justifyContent="center"
-          padding="0 1rem"
-        >
-          <Heading>Recent order/s</Heading>
-          {order.length < 1 ? (
-            <EmptyCart
-              title="You have no order"
-              content="You have not ordered anything"
-            />
-          ) : (
-            <OrderCard order={order} />
-          )}
+        <VStack alignItems="start">
+          <Heading size="4xl"> Welcome! {userName} </Heading>
         </VStack>
       </VStack>
     </>

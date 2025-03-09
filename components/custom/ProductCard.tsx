@@ -36,6 +36,7 @@ export default function ProductCard({ product }: Props) {
         <Card.Body
           padding={{
             base: ".5rem",
+            sm: "1rem",
           }}
         >
           <VStack justifyContent="space-between" gap="1rem" height="100%">

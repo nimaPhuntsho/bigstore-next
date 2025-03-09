@@ -16,14 +16,13 @@ import { z } from "zod";
 import { PasswordInput } from "@/components/ui/password-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormError from "@/components/custom/FormError";
-import NewLogo from "@/components/custom/NewLogo";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/app/store /session/session";
 import Link from "next/link";
 import { startCase } from "lodash";
 import { registerSchema } from "@/app/(auth)/register/registerSchema";
-import { createClient } from "@/app/supabase/supabaseServer";
+
 import { createUser } from "@/app/actions/createUser";
 import { signUpUser } from "@/app/actions/signUpUser";
 
@@ -61,10 +60,9 @@ const RegisterForm = () => {
     success: false,
   });
 
-  useEffect(() => {}, [password]);
   const router = useRouter();
-
-  const { updateSession } = useSession();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
 
   const onSubmit: SubmitHandler<RegisterType> = async (signUpData) => {
     try {
@@ -111,15 +109,22 @@ const RegisterForm = () => {
           error: true,
           errorMessage: userError,
         }));
+        setRegisterState((state) => ({ ...state, loading: false }));
+
+        return;
       }
 
       console.log(userError);
 
-      router.push("/dashboard");
+      if (!callbackUrl) {
+        router.push(`/dashboard/${userData[0].user_id}`);
+        return;
+      }
+
+      router.push(callbackUrl);
+      setRegisterState((state) => ({ ...state, loading: false }));
     } catch (error) {
       console.log(error);
-    } finally {
-      setRegisterState((state) => ({ ...state, loading: false }));
     }
   };
   return (
@@ -216,6 +221,7 @@ const RegisterForm = () => {
                   )}
                 </VStack>
                 <Button
+                  size="xl"
                   _active={{
                     bgColor: "#F7F7F7",
                     color: "black",

@@ -1,5 +1,6 @@
 import RegisterForm from "@/components/custom/RegisterForm";
 import { Box, VStack } from "@chakra-ui/react";
+import { Suspense } from "react";
 
 export default async function Register() {
   return (
@@ -14,7 +15,9 @@ export default async function Register() {
         ></VStack>
         <VStack height="50dvh"></VStack>
         <Box width="100%" position="absolute" top={0}>
-          <RegisterForm />
+          <Suspense fallback={"loading..."}>
+            <RegisterForm />
+          </Suspense>
         </Box>
       </VStack>
     </>

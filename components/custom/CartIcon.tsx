@@ -11,10 +11,21 @@ const Cart = () => {
   return (
     <>
       <HStack>
-        <Icon fontSize="lg">
-          <BiSolidCart />
-        </Icon>
-        <Text>{items.length}</Text>
+        <Button
+          _active={{
+            bgColor: "black",
+            color: "white",
+            transform: "scale(0.95)",
+          }}
+          transition="all .1s ease-in-out"
+          fontWeight="bold"
+          variant="outline"
+        >
+          <Icon fontSize="lg">
+            <BiSolidCart />
+          </Icon>
+          <Text>{items.length}</Text>
+        </Button>
       </HStack>
     </>
   );

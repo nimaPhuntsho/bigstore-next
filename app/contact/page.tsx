@@ -1,6 +1,13 @@
 import ContactForm from "@/components/custom/ContactForm";
 import { Box, Grid, VStack } from "@chakra-ui/react";
 
+export const generateMetadata = async () => {
+  return {
+    title: "Contact",
+    description: "contact form to send querries to Bigstore",
+  };
+};
+
 export default async function Contact() {
   return (
     <VStack position="relative">

@@ -30,6 +30,14 @@ const OrderStatus = ({ customerName }: Props) => {
 
   const { items, orderId } = orderStatus;
 
+  const calculateItemTotal = ({
+    price,
+    quantity,
+  }: {
+    price: number;
+    quantity: number;
+  }) => price * quantity;
+
   const getTotalOrder = (items: CartItemType[]) => {
     return items.reduce((accumulator, item) => {
       return accumulator + item.price * item.quantity;
@@ -127,7 +135,11 @@ const OrderStatus = ({ customerName }: Props) => {
                       </VStack>
                     </VStack>
                     <Text fontWeight={600} justifySelf="end">
-                      $ {item.price * item.quantity}
+                      ${" "}
+                      {calculateItemTotal({
+                        price: item.price,
+                        quantity: item.quantity,
+                      }).toFixed(2)}
                     </Text>
                   </Grid>
                 ))}

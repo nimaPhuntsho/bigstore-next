@@ -61,7 +61,7 @@ export const callFetch = async <TSchema extends Schema>({
 
       if (!response.ok) {
         return {
-          data: null,
+          data: await response.json(),
           success: false as const,
           status: response.status,
         };

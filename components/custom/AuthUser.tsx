@@ -13,9 +13,10 @@ import Link from "next/link";
 
 interface Props {
   userName: string;
+  userId: string;
 }
 
-const AuthUser = ({ userName }: Props) => {
+const AuthUser = ({ userName, userId }: Props) => {
   return (
     <MenuRoot>
       <MenuTrigger asChild>
@@ -28,7 +29,7 @@ const AuthUser = ({ userName }: Props) => {
       </MenuTrigger>
       <MenuContent>
         <MenuItem value="account">
-          <Link href="/dashboard">
+          <Link href={`/dashboard/${userId}`}>
             <Text> Manage account </Text>
           </Link>
         </MenuItem>

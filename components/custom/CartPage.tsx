@@ -19,7 +19,7 @@ import { placeOrder } from "@/app/actions/placeOrder";
 import { useOrderStatus } from "@/app/store /order-status/orderStatus";
 import { useRouter } from "next/navigation";
 import EmptyCart from "./EmptyCart";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { IoRemoveCircle } from "react-icons/io5";
 import Image from "next/image";
 
 const Cart = () => {
@@ -43,6 +43,7 @@ const Cart = () => {
       const response = await placeOrder(items);
       if (!response.data) return;
       if (response.success) {
+        router.push("/order-status");
         updateOrder({
           orderId: response.data,
           userId: "test",
@@ -50,7 +51,6 @@ const Cart = () => {
         });
         reset();
         setOrderState((state) => ({ ...state, loading: false }));
-        router.push("/order-status");
       }
     } catch (error) {
       console.log(error);
@@ -82,40 +82,14 @@ const Cart = () => {
                     bgColor="rgb(249, 242, 242)"
                     borderRadius="10px"
                     p="1rem"
+                    position="relative"
                   >
-                    {/* <VStack alignItems="start">
-                      <Text fontWeight="500">
-                        {index + 1}. {item.title}
-                      </Text>
-                      <Text fontWeight="900">$ {item.price} </Text>
-                    </VStack>
-                    <QuantityCounter
-                      onIncrement={() => increment(item)}
-                      onDecrement={() => decrement(item)}
-                      quantity={item.quantity}
-                    />
-                    <Text justifySelf="end">
-                      $ {(item.price * item.quantity).toFixed(2)}
-                    </Text>
-                    <Text
-                      justifySelf="end"
-                      onClick={() => {
-                        remove(item);
-                      }}
-                      style={{ cursor: "pointer" }}
-                    >
-                      <Icon>
-                        <RiDeleteBin6Line />
-                      </Icon>
-                    </Text> */}
-
                     <Image
                       src={item.thumbnail}
                       width={60}
                       height={60}
                       alt={item.title}
                     />
-
                     <VStack alignItems="start">
                       <Text fontWeight={600}> {item.title} </Text>
                       <Text>$ {item.price} </Text>
@@ -127,6 +101,22 @@ const Cart = () => {
                         quantity={item.quantity}
                       />
                     </Box>
+                    <Icon
+                      position="absolute"
+                      right={"-3%"}
+                      top={"-10%"}
+                      size="2xl"
+                      color={"green"}
+                      _active={{
+                        bgColor: "black",
+                        color: "white",
+                        transform: "scale(0.95)",
+                      }}
+                      transition="all .1s ease-in-out"
+                      onClick={() => remove(item)}
+                    >
+                      <IoRemoveCircle />
+                    </Icon>
                   </Grid>
                 ))}
               </VStack>

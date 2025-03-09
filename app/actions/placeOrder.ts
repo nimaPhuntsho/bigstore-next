@@ -10,7 +10,12 @@ export async function placeOrder(order: CartItemType[]): Promise<{
 }> {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
-  if (!data.user) redirect("/login?callbackUrl=/cart");
+
+  // if the user is in the database but not logged in
+  if (!data.user) {
+    redirect("/login?callbackUrl=/cart");
+    return { success: false, message: "Redirecting to login", data: null };
+  }
   const { data: orderData, error: errorData } = await supabase
     .from("orders")
     .insert({

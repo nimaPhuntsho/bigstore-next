@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   VStack,
   Text,
@@ -13,7 +13,7 @@ import {
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { registerSchema } from "@/app/(auth)/register/registerSchema";
 import { PasswordInput } from "../ui/password-input";
 import { customRevalidatePath } from "@/app/actions/customRevalidatePath";
@@ -21,6 +21,7 @@ import { development } from "@/mode";
 import { callFetch } from "@/app/util/fetch";
 import CustomDialog from "./CustomDialog";
 import ResetPasswordDialog from "./ResetPasswordDialog";
+import { SessionSchema } from "@/app/(auth)/register/zodSchema";
 
 type RegisterSchemaType = z.infer<typeof registerSchema>;
 type LoginType = Pick<RegisterSchemaType, "email" | "password">;
@@ -63,10 +64,17 @@ const Login = () => {
           message: z.string(),
           success: z.boolean(),
           error: z.string().nullable(),
+          data: SessionSchema,
         }),
       });
 
       if (!signInData) {
+        setLoginState((state) => ({
+          ...state,
+          hasError: true,
+          message: "Error loggin in, please try again",
+        }));
+        setLoginState((state) => ({ ...state, loading: false }));
         return;
       }
 
@@ -79,10 +87,13 @@ const Login = () => {
         setLoginState((state) => ({ ...state, loading: false }));
         return;
       }
-      customRevalidatePath("dashboard");
+
+      const userId = signInData.data.user.id;
+
+      customRevalidatePath(`/dashboard/${userId}`);
       if (!callbackUrl) {
         setLoginState((state) => ({ ...state, loading: false }));
-        router.push("/dashboard");
+        router.push(`/dashboard/${userId}`);
         return;
       }
       router.push(callbackUrl);
@@ -132,6 +143,7 @@ const Login = () => {
                         />
                       </VStack>
                       <Button
+                        size="xl"
                         _active={{
                           bgColor: "#F7F7F7",
                           color: "black",
@@ -146,12 +158,16 @@ const Login = () => {
                       </Button>
                     </VStack>
                     {loginState.hasError && (
-                      <Text color="red"> {loginState.message} </Text>
+                      <Text color="red">{loginState.message} </Text>
                     )}
                   </VStack>
                 </form>
                 <ResetPasswordDialog />
-                <Link href="/register">
+                <Link
+                  href={
+                    callbackUrl ? "/register?callbackUrl=/cart" : "/register"
+                  }
+                >
                   <Text>
                     Dont have an account?
                     <Text
@@ -162,6 +178,11 @@ const Login = () => {
                       fontWeight="bold"
                       as="span"
                       ml={1}
+                      onClick={() => {
+                        if (callbackUrl) {
+                          redirect(`/register?callbackUrl=/cart`);
+                        }
+                      }}
                     >
                       Sign up here
                     </Text>
