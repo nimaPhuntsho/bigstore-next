@@ -13,6 +13,7 @@ import {
 import React, { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { PasswordInput } from "../ui/password-input";
+import { useRouter } from "next/navigation";
 
 const ForgotPasswordForm = () => {
   const [passwordState, setPasswordState] = useState<{
@@ -37,6 +38,8 @@ const ForgotPasswordForm = () => {
     defaultValues: { newPassword: "", confirmPassword: "" },
   });
 
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<{
     newPassword: string;
     confirmPassword: string;
@@ -54,7 +57,9 @@ const ForgotPasswordForm = () => {
           ...state,
           error: true,
           errorMessage: response.message,
+          loading: false,
         }));
+        return;
       }
 
       setPasswordState((state) => ({
@@ -120,6 +125,10 @@ const ForgotPasswordForm = () => {
                 {passwordState.incorrect && <Text>Passwords doesnt match</Text>}
                 {passwordState.success && (
                   <Text> {passwordState.successMessage} </Text>
+                )}
+
+                {passwordState.error && (
+                  <Text> {passwordState.errorMessage} </Text>
                 )}
 
                 <Button

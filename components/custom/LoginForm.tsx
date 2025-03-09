@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import {
   VStack,
   Text,
@@ -19,7 +19,6 @@ import { PasswordInput } from "../ui/password-input";
 import { customRevalidatePath } from "@/app/actions/customRevalidatePath";
 import { development } from "@/mode";
 import { callFetch } from "@/app/util/fetch";
-import CustomDialog from "./CustomDialog";
 import ResetPasswordDialog from "./ResetPasswordDialog";
 import { SessionSchema } from "@/app/(auth)/register/zodSchema";
 
@@ -46,7 +45,7 @@ const Login = () => {
         password: "",
       },
     });
-
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
@@ -92,8 +91,10 @@ const Login = () => {
 
       customRevalidatePath(`/dashboard/${userId}`);
       if (!callbackUrl) {
-        setLoginState((state) => ({ ...state, loading: false }));
-        router.push(`/dashboard/${userId}`);
+        startTransition(() => {
+          router.push(`/dashboard/${userId}`);
+          setLoginState((state) => ({ ...state, loading: false }));
+        });
         return;
       }
       router.push(callbackUrl);
