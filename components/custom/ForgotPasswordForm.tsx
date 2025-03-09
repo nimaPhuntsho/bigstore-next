@@ -1,7 +1,14 @@
 "use client";
 
 import { supabase } from "@/app/supabase/supabaseClient";
-import { Button, Heading, VStack, Input, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Heading,
+  VStack,
+  Input,
+  Text,
+  Spinner,
+} from "@chakra-ui/react";
 
 import React, { useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
@@ -16,7 +23,7 @@ const ForgotPasswordForm = () => {
     success: boolean;
     successMessage: string;
   }>({
-    loading: true,
+    loading: false,
     error: false,
     errorMessage: "",
     incorrect: false,
@@ -29,11 +36,14 @@ const ForgotPasswordForm = () => {
   }>({
     defaultValues: { newPassword: "", confirmPassword: "" },
   });
+
   const onSubmit: SubmitHandler<{
     newPassword: string;
     confirmPassword: string;
   }> = async ({ newPassword, confirmPassword }) => {
     try {
+      setPasswordState((state) => ({ ...state, loading: true }));
+
       if (newPassword !== confirmPassword) {
         setPasswordState((state) => ({ ...state, incorrect: true }));
         return;
@@ -51,6 +61,7 @@ const ForgotPasswordForm = () => {
         ...state,
         success: true,
         successMessage: "New password updated",
+        loading: false,
       }));
     } catch (error) {
       console.log(error);
@@ -111,7 +122,16 @@ const ForgotPasswordForm = () => {
                   <Text> {passwordState.successMessage} </Text>
                 )}
 
-                <Button type="submit"> Update Password </Button>
+                <Button
+                  _active={{
+                    textDecoration: "underline",
+                  }}
+                  transition="all .1s ease-in-out"
+                  fontWeight="bold"
+                  type="submit"
+                >
+                  Update Password {passwordState.loading && <Spinner />}
+                </Button>
               </VStack>
             </form>
           </VStack>
