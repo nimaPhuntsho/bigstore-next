@@ -1,5 +1,6 @@
 "use client";
 
+import { isEmptyString } from "@/app/util/emptyString";
 import {
   Button,
   Flex,
@@ -71,7 +72,10 @@ const HamburgerMenu = ({ userId }: Props) => {
                 Contact
               </Text>
             </Link>
-            <Link onClick={onToggle} href={`/dashboard/${userId}`}>
+            <Link
+              onClick={onToggle}
+              href={isEmptyString(userId) ? "/login" : `/dashboard/${userId}`}
+            >
               <Text
                 _active={{
                   textDecoration: "underline",

@@ -6,7 +6,13 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    domains: ["cdn.dummyjson.com"], // Add the external domain here
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.dummyjson.com",
+      },
+    ],
+    // domains: ["cdn.dummyjson.com"], // Add the external domain here
   },
   webpack: (config) => {
     config.cache = {
