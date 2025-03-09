@@ -17,7 +17,7 @@ export default async function Orderstatus() {
 
   return (
     <>
-      <VStack>
+      <VStack alignItems="center">
         <OrderStatus customerName={userData.first_name.toUpperCase()} />
       </VStack>
     </>

@@ -59,6 +59,7 @@ const OrderStatus = ({ customerName }: Props) => {
         gap="1rem"
         p="1rem"
         minHeight="100dvh"
+        maxW="1500px"
       >
         <VStack flex={1} alignItems="stretch" gap="2rem">
           <Heading fontWeight={700} size="4xl">
