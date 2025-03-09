@@ -1,6 +1,6 @@
 export const development = {
   mode: {
     local: "http://localhost:3000",
-    production: "https://bigstore-next.vercel.app",
+    production: "https://bigstores.nimaphuntsho.com/",
   },
 };
