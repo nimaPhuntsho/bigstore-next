@@ -57,7 +57,7 @@ const Login = () => {
       const { mode } = development;
 
       const { success, data: signInData } = await callFetch({
-        endpoint: `${mode.local}/api/v1/signIn`,
+        endpoint: `${mode.production}/api/v1/signIn`,
         method: "POST",
         body: data,
         schema: z.object({
