@@ -46,7 +46,7 @@ const MainHeader = ({ userName, userId }: Props) => {
             {userName ? (
               <HStack>
                 <AuthUser userName={userName} userId={userId} />
-                <HamburgerMenu />
+                <HamburgerMenu userId={userId} />
               </HStack>
             ) : (
               <Link href="/login">
@@ -109,7 +109,7 @@ const MainHeader = ({ userName, userId }: Props) => {
                   </Button>
                 </Link>
               </Box>
-              <HamburgerMenu />
+              <HamburgerMenu userId={userId} />
             </HStack>
           </HStack>
         </main>

@@ -14,14 +14,14 @@ import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
 
+interface Props {
+  userId: string;
+}
+
 const HamburgerMenu = () => {
   const { open, onToggle } = useDisclosure();
   return (
     <Flex>
-      {/* <Button variant="outline" onClick={onToggle} display={{ md: "none" }}>
-        {!open && <GiHamburgerMenu />}
-      </Button> */}
-
       <Box display={{ md: "none" }}>
         {!open && <GiHamburgerMenu size={30} onClick={onToggle} />}
       </Box>
@@ -69,6 +69,18 @@ const HamburgerMenu = () => {
                 padding=".5rem"
               >
                 Contact
+              </Text>
+            </Link>
+            <Link onClick={onToggle} href={`/dashboard/${"userId"}`}>
+              <Text
+                _active={{
+                  textDecoration: "underline",
+                }}
+                fontSize="4xl"
+                alignSelf="start"
+                padding=".5rem"
+              >
+                Account
               </Text>
             </Link>
           </VStack>
