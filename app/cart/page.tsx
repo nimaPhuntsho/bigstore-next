@@ -14,7 +14,7 @@ export default async function Cart() {
 
   return (
     <>
-      <VStack minHeight="100dvh" p="1rem 0">
+      <VStack minHeight="100dvh">
         <CartPage />
       </VStack>
     </>

@@ -7,6 +7,7 @@ import {
   useDisclosure,
   VStack,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
@@ -17,32 +18,70 @@ const HamburgerMenu = () => {
   const { open, onToggle } = useDisclosure();
   return (
     <Flex>
-      <Button variant="outline" onClick={onToggle} display={{ md: "none" }}>
-        <Icon>{!open ? <GiHamburgerMenu /> : <IoMdClose />}</Icon>
-      </Button>
+      {/* <Button variant="outline" onClick={onToggle} display={{ md: "none" }}>
+        {!open && <GiHamburgerMenu />}
+      </Button> */}
+
+      <Box display={{ md: "none" }}>
+        {!open && <GiHamburgerMenu size={30} onClick={onToggle} />}
+      </Box>
+
       {open && (
         <VStack
           display={{ base: "flex", md: "none" }}
-          position="absolute"
-          top="100%"
+          position="fixed"
+          top="0"
           right="0"
           bgColor="#212121"
-          width="100%"
+          w="100%"
+          h="100%"
           zIndex="1"
           color={"white"}
-          alignItems="center"
-          borderRadius="10px"
+          alignItems="stretch"
+          overflow="hidden"
+          gap="1rem"
+          p="2rem"
+          justifyContent="space-between"
         >
-          <Link onClick={onToggle} href="/listings">
-            <Text padding=".5rem" fontWeight={600}>
-              Products
-            </Text>
-          </Link>
-
-          <Link onClick={onToggle} href="/contact">
-            <Text padding=".5rem" fontWeight={600}>
-              Contact
-            </Text>
+          <VStack alignItems="stretch">
+            <Box alignSelf="end">
+              {open && <IoMdClose size={30} onClick={onToggle} />}
+            </Box>
+            <Link onClick={onToggle} href="/listings">
+              <Text
+                _active={{
+                  textDecoration: "underline",
+                }}
+                fontSize="4xl"
+                alignSelf="start"
+                padding=".5rem"
+              >
+                Products
+              </Text>
+            </Link>
+            <Link onClick={onToggle} href="/contact">
+              <Text
+                _active={{
+                  textDecoration: "underline",
+                }}
+                fontSize="4xl"
+                alignSelf="start"
+                padding=".5rem"
+              >
+                Contact
+              </Text>
+            </Link>
+          </VStack>
+          <Link href="/login">
+            <Button
+              variant="outline"
+              colorPalette="red"
+              fontWeight={800}
+              size="xl"
+              onClick={onToggle}
+            >
+              Login
+            </Button>
           </Link>
         </VStack>
       )}

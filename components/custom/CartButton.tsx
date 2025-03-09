@@ -2,7 +2,8 @@
 import { ProductSchemaType } from "@/app/api/v1/orders/orderSchema";
 import { useCartStore } from "@/app/store /cart";
 import { Button, Card } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { BiSolidCart } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
 
 interface Props {
   products: ProductSchemaType;
@@ -18,20 +19,30 @@ export default function CartButton({ products }: Props) {
     return !productExists(products) ? (
       <Button
         variant="surface"
+        _active={{
+          bgColor: "black",
+          color: "white",
+          transform: "scale(0.95)",
+        }}
         onClick={() => {
           add(products);
         }}
       >
-        Add
+        <BiSolidCart />
       </Button>
     ) : (
       <Button
-        variant="surface"
+        _active={{
+          bgColor: "black",
+          color: "white",
+          transform: "scale(0.95)",
+        }}
+        variant="outline"
         onClick={() => {
           remove(products);
         }}
       >
-        Remove
+        <MdDeleteOutline />
       </Button>
     );
   };

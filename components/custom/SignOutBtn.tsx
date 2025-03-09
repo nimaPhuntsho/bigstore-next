@@ -2,14 +2,26 @@
 
 import React from "react";
 import { signOut } from "@/app/actions/auth";
-import { Button, Icon } from "@chakra-ui/react";
-import { PiSignOutLight } from "react-icons/pi";
+import { Button } from "@chakra-ui/react";
+import { VscSignOut } from "react-icons/vsc";
 interface Props {
   title: string;
 }
 
 const SignOutBtn = () => {
-  return <p onClick={() => signOut()}>Sign out</p>;
+  return (
+    <Button
+      fontWeight={700}
+      _active={{
+        bgColor: "#F7F7F7",
+        color: "black",
+        transform: "scale(0.95)",
+      }}
+      onClick={() => signOut()}
+    >
+      Sign out <VscSignOut />
+    </Button>
+  );
 };
 
 export default SignOutBtn;

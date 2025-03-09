@@ -4,6 +4,9 @@ import { Metadata } from "next";
 import { createClient } from "@/app/supabase/supabaseServer";
 import { Box, Heading, VStack } from "@chakra-ui/react";
 import UserTabs from "@/components/custom/UserTabs";
+import SignOutBtn from "@/components/custom/SignOutBtn";
+import { Suspense } from "react";
+import CustomSkeleton from "@/components/custom/Skeleton";
 
 interface Props {
   params: Promise<{ userId: string }>;
@@ -68,22 +71,25 @@ export default async function DashboardPage({ params }: Props) {
 
   return (
     <>
-      <VStack
-        w={{
-          base: "100%",
-        }}
-        alignItems={{
-          base: "stretch",
-          md: "start",
-        }}
-        minH="100dvh"
-        p="0 1rem"
-      >
-        <VStack alignItems="start">
-          <Heading size="4xl"> Welcome! {user.data.first_name} </Heading>
-          <UserTabs order={mappedOrder} userId={user.data.user_id} />
+      <Suspense fallback={<CustomSkeleton />}>
+        <VStack
+          w={{
+            base: "100%",
+          }}
+          alignItems={{
+            base: "stretch",
+            md: "start",
+          }}
+          minH="100dvh"
+          p="0 1rem"
+        >
+          <VStack alignItems="start">
+            <Heading size="4xl"> Welcome! {user.data.first_name} </Heading>
+            <SignOutBtn />
+            <UserTabs order={mappedOrder} userId={user.data.user_id} />
+          </VStack>
         </VStack>
-      </VStack>
+      </Suspense>
     </>
   );
 }

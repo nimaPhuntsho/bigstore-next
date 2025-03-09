@@ -10,7 +10,7 @@ interface Props {
 const EmptyCart = ({ title, content }: Props) => {
   return (
     <>
-      <VStack width="100%" h="100dvh" alignItems="center">
+      <VStack width="100%" alignItems="center">
         <Heading size="md"> {title} </Heading>
         <Image src="/cart.png" width={200} height={200} alt="cart" />
         <Text textAlign="center">{content}</Text>

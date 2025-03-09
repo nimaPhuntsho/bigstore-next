@@ -8,7 +8,9 @@ export default async function Login() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
-  if (data.user) redirect("/dashboard");
+  if (data.user) {
+    redirect(`/dashboard/${data.user.id}`);
+  }
 
   return (
     <>

@@ -1,5 +1,5 @@
 "use client";
-import { Button, HStack, Icon, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import NewLogo from "./NewLogo";
 import Link from "next/link";
@@ -20,11 +20,11 @@ const MainHeader = ({ userName, userId }: Props) => {
     <main>
       {userName ? (
         <HStack
-          position="relative"
           padding="1rem"
           alignItems="center"
           justifyContent="space-between"
           width="100%"
+          position="relative"
         >
           <NewLogo />
           <HStack display={{ base: "none", md: "flex" }}>
@@ -85,22 +85,30 @@ const MainHeader = ({ userName, userId }: Props) => {
               <Link href="/cart">
                 <Cart />
               </Link>
-              <Link href="/login">
-                <Button
-                  _active={{
-                    bgColor: "#F7F7F7",
-                    color: "black",
-                    transform: "scale(0.95)",
-                  }}
-                  transition="all .1s ease-in-out"
-                  fontWeight="bold"
-                >
-                  Login
-                  <Icon>
-                    <HiLogout />
-                  </Icon>
-                </Button>
-              </Link>
+              <Box
+                display={{
+                  base: "none",
+                  sm: "none",
+                  md: "flex",
+                }}
+              >
+                <Link href="/login">
+                  <Button
+                    _active={{
+                      bgColor: "#F7F7F7",
+                      color: "black",
+                      transform: "scale(0.95)",
+                    }}
+                    transition="all .1s ease-in-out"
+                    fontWeight="bold"
+                  >
+                    Login
+                    <Icon>
+                      <HiLogout />
+                    </Icon>
+                  </Button>
+                </Link>
+              </Box>
               <HamburgerMenu />
             </HStack>
           </HStack>
