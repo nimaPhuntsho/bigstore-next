@@ -15,17 +15,7 @@ export default async function Login() {
   return (
     <>
       <VStack position="relative">
-        <VStack
-          bgImage="url('/images/login-bg.jpg')"
-          bgSize="cover"
-          bgRepeat="no-repeat"
-          width="100%"
-          height="50dvh"
-        ></VStack>
-        <VStack height="50dvh"></VStack>
-        <Box position="absolute" top={0}>
-          <LoginForm />
-        </Box>
+        <LoginForm />
       </VStack>
     </>
   );

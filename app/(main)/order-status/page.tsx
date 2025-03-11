@@ -1,5 +1,5 @@
 import OrderStatus from "@/components/custom/OrderStatus";
-import { createClient } from "../supabase/supabaseServer";
+import { createClient } from "../../supabase/supabaseServer";
 import { VStack } from "@chakra-ui/react";
 
 export default async function Orderstatus() {

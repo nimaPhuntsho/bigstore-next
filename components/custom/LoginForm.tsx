@@ -14,13 +14,13 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import Link from "next/link";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
-import { registerSchema } from "@/app/(auth)/register/registerSchema";
+import { registerSchema } from "@/app/(main)/(auth)/register/registerSchema";
 import { PasswordInput } from "../ui/password-input";
 import { customRevalidatePath } from "@/app/actions/customRevalidatePath";
 import { development } from "@/mode";
 import { callFetch } from "@/app/util/fetch";
 import ResetPasswordDialog from "./ResetPasswordDialog";
-import { SessionSchema } from "@/app/(auth)/register/zodSchema";
+import { SessionSchema } from "@/app/(main)/(auth)/register/zodSchema";
 
 type RegisterSchemaType = z.infer<typeof registerSchema>;
 type LoginType = Pick<RegisterSchemaType, "email" | "password">;
@@ -105,94 +105,84 @@ const Login = () => {
 
   return (
     <>
-      <VStack width="100%" height="100dvh" justifyContent="center">
-        <Box
-          width={{
-            base: "100%",
-            sm: "400px",
-          }}
-        >
-          <Card.Root padding="1rem">
-            <Card.Header>
-              <Heading fontWeight={800}>Login</Heading>
-            </Card.Header>
-            <Card.Body>
-              <VStack alignItems="stretch">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <VStack alignItems="stretch">
-                    <VStack alignItems="stretch" gap="1rem">
-                      <VStack alignItems="start" width="100%">
-                        <Text>Email </Text>
-                        <Controller
-                          name="email"
-                          control={control}
-                          render={({ field }) => <Input {...field} />}
-                          rules={{
-                            required: "Email is required",
-                          }}
-                        />
-                      </VStack>
-                      <VStack alignItems="start" width="100%">
-                        <Text>Password</Text>
-                        <Controller
-                          name="password"
-                          control={control}
-                          render={({ field }) => <PasswordInput {...field} />}
-                          rules={{
-                            required: "Password is required",
-                          }}
-                        />
-                      </VStack>
-                      <Button
-                        size="xl"
-                        _active={{
-                          bgColor: "#F7F7F7",
-                          color: "black",
-                          transform: "scale(0.95)",
-                        }}
-                        transition="all .1s ease-in-out"
-                        fontWeight="bold"
-                        type="submit"
-                        disabled={!formState.isValid}
-                      >
-                        Login {loginState.loading && <Spinner />}
-                      </Button>
-                    </VStack>
-                    {loginState.hasError && (
-                      <Text color="red">{loginState.message} </Text>
-                    )}
-                  </VStack>
-                </form>
-                <ResetPasswordDialog />
-                <Link
-                  href={
-                    callbackUrl ? "/register?callbackUrl=/cart" : "/register"
-                  }
-                >
-                  <Text>
-                    Dont have an account?
-                    <Text
-                      _active={{
-                        textDecoration: "underline",
-                      }}
-                      transition="all .1s ease-in-out"
-                      fontWeight="bold"
-                      as="span"
-                      ml={1}
-                      onClick={() => {
-                        if (callbackUrl) {
-                          redirect(`/register?callbackUrl=/cart`);
-                        }
-                      }}
-                    >
-                      Sign up here
-                    </Text>
-                  </Text>
-                </Link>
+      <VStack
+        minW={370}
+        minH="100dvh"
+        justifyContent="center"
+        alignItems="stretch"
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <VStack alignItems="stretch">
+            <VStack alignItems="stretch" gap="1rem">
+              <Heading size="2xl" fontWeight={700}>
+                Sign in
+              </Heading>
+              <VStack alignItems="start" width="100%">
+                <Text>Email </Text>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => <Input size="2xl" {...field} />}
+                  rules={{
+                    required: "Email is required",
+                  }}
+                />
               </VStack>
-            </Card.Body>
-          </Card.Root>
-        </Box>
+              <VStack alignItems="start" width="100%">
+                <Text>Password</Text>
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <PasswordInput size="2xl" {...field} />
+                  )}
+                  rules={{
+                    required: "Password is required",
+                  }}
+                />
+              </VStack>
+              <Button
+                size="2xl"
+                _active={{
+                  bgColor: "#F7F7F7",
+                  color: "black",
+                  transform: "scale(0.95)",
+                }}
+                transition="all .1s ease-in-out"
+                fontWeight="bold"
+                type="submit"
+                disabled={!formState.isValid}
+              >
+                Login {loginState.loading && <Spinner />}
+              </Button>
+            </VStack>
+            {loginState.hasError && (
+              <Text color="red">{loginState.message} </Text>
+            )}
+          </VStack>
+        </form>
+        <ResetPasswordDialog />
+        <Link href={callbackUrl ? "/register?callbackUrl=/cart" : "/register"}>
+          <Text>
+            Dont have an account?
+            <Text
+              _active={{
+                textDecoration: "underline",
+              }}
+              transition="all .1s ease-in-out"
+              fontWeight="bold"
+              as="span"
+              ml={1}
+              onClick={() => {
+                if (callbackUrl) {
+                  redirect(`/register?callbackUrl=/cart`);
+                }
+              }}
+            >
+              Sign up here
+            </Text>
+          </Text>
+        </Link>
       </VStack>
     </>
   );

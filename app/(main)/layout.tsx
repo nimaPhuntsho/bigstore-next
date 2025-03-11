@@ -5,7 +5,6 @@ import { Provider } from "@/components/ui/provider";
 import Header from "@/components/custom/Header";
 import { QueryProvider } from "@/components/custom/QueryProvider";
 import Footer from "@/components/custom/Footer";
-import { Box, VStack } from "@chakra-ui/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

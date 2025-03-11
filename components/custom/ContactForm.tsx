@@ -21,9 +21,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import FormError from "@/components/custom/FormError";
 import { FaHandsWash } from "react-icons/fa";
-import { contactSchema } from "@/app/contact/contactSchema";
+
 import sendMessage from "@/app/actions/sendMessage";
 import { Toaster, toaster } from "@/components/ui/toaster";
+import { contactSchema } from "@/app/(main)/contact/contactSchema";
+import { sendEmail } from "@/app/actions/sendEmail";
 
 export type ContactInputType = z.infer<typeof contactSchema>;
 

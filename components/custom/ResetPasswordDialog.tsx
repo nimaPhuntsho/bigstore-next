@@ -68,7 +68,7 @@ const ResetPasswordDialog = ({}: Props) => {
   return (
     <DialogRoot placement={"center"}>
       <DialogTrigger asChild>
-        <Button size="xl" fontWeight="bold" variant="outline">
+        <Button size="2xl" fontWeight="bold" variant="outline">
           Reset password
         </Button>
       </DialogTrigger>

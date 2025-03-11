@@ -1,5 +1,5 @@
 import { Session } from "./schema";
-import { UserSessionState } from "./../../(auth)/register/registerSchema";
+import { UserSessionState } from "../../(main)/(auth)/register/registerSchema";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

@@ -6,7 +6,7 @@ export default async function Register() {
   return (
     <>
       <VStack position="relative">
-        <VStack
+        {/* <VStack
           bgImage="url('/images/signup-bg.jpg')"
           bgSize="cover"
           bgRepeat="no-repeat"
@@ -15,10 +15,12 @@ export default async function Register() {
         ></VStack>
         <VStack height="50dvh"></VStack>
         <Box width="100%" position="absolute" top={0}>
-          <Suspense fallback={"loading..."}>
-            <RegisterForm />
-          </Suspense>
-        </Box>
+          
+        </Box> */}
+
+        <Suspense fallback={"loading..."}>
+          <RegisterForm />
+        </Suspense>
       </VStack>
     </>
   );

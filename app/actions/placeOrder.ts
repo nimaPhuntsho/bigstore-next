@@ -2,6 +2,7 @@
 import { CartItemType } from "@/app/store /cart";
 import { redirect } from "next/navigation";
 import { createClient } from "../supabase/supabaseServer";
+import { sendEmail } from "./sendEmail";
 
 export async function placeOrder(order: CartItemType[]): Promise<{
   success: boolean;
@@ -52,6 +53,28 @@ export async function placeOrder(order: CartItemType[]): Promise<{
     };
 
   console.log(cartError);
+
+  const user = await supabase
+    .from("users")
+    .select("*")
+    .eq("user_id", data.user.id)
+    .single();
+
+  if (!user.data || !user.data.first_name || !user.data.email) {
+    return {
+      message: "null data",
+      data: null,
+      success: false as const,
+    };
+  }
+
+  await sendEmail({
+    email: user.data.email,
+    firstName: user.data.first_name,
+    subject: "Order confirmation",
+    department: "support",
+    orderId: orderData[0].order_id,
+  });
   return {
     success: true as const,
     message: "Items added",

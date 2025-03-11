@@ -1,5 +1,6 @@
+import { sendEmail } from "@/app/actions/sendEmail";
 import { supabase } from "@/app/supabase/supabaseClient";
-import { registerSchema } from "./../../../(auth)/register/registerSchema";
+import { registerSchema } from "../../../(main)/(auth)/register/registerSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -21,7 +22,7 @@ export async function POST(req: NextRequest) {
         data: null,
       });
 
-    if (!data.session) {
+    if (!data.session || !data.user) {
       return NextResponse.json({
         success: false as const,
         error: "null data",

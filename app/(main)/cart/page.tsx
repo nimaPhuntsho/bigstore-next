@@ -1,5 +1,5 @@
 import CartPage from "@/components/custom/CartPage";
-import { createClient } from "../supabase/supabaseServer";
+import { createClient } from "../../supabase/supabaseServer";
 import { VStack } from "@chakra-ui/react";
 
 export const generateMetadata = async () => {

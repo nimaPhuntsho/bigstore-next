@@ -1,7 +1,9 @@
+import AdminLoginForm from "../components/AdminLoginForm";
+
 export default function Admin() {
   return (
     <>
-      <h1>admin</h1>
+      <AdminLoginForm />
     </>
   );
 }

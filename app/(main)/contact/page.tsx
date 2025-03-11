@@ -1,5 +1,5 @@
 import ContactForm from "@/components/custom/ContactForm";
-import { Box, Grid, VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 
 export const generateMetadata = async () => {
   return {

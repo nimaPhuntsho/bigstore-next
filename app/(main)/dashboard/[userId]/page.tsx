@@ -6,7 +6,7 @@ import { Box, Heading, VStack } from "@chakra-ui/react";
 import UserTabs from "@/components/custom/UserTabs";
 import SignOutBtn from "@/components/custom/SignOutBtn";
 import { Suspense } from "react";
-import CustomSkeleton from "@/components/custom/Skeleton";
+import CustomSkeleton from "@/components/custom/CustomSkeleton";
 
 interface Props {
   params: Promise<{ userId: string }>;

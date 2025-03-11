@@ -8,6 +8,7 @@ import {
   Card,
   Spinner,
   HStack,
+  Heading,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
@@ -21,7 +22,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "@/app/store /session/session";
 import Link from "next/link";
 import { startCase } from "lodash";
-import { registerSchema } from "@/app/(auth)/register/registerSchema";
+import { registerSchema } from "@/app/(main)/(auth)/register/registerSchema";
 
 import { createUser } from "@/app/actions/createUser";
 import { signUpUser } from "@/app/actions/signUpUser";
@@ -79,6 +80,8 @@ const RegisterForm = () => {
       const { data, error } = await signUpUser({
         email: email,
         password: password,
+        firstName: firstName,
+        lastName: lastName,
       });
 
       console.log(error);
@@ -88,36 +91,23 @@ const RegisterForm = () => {
           ...state,
           error: true,
           errorMessage: error,
+          loading: false,
         }));
         return;
       }
 
-      const { session, user } = data;
-
-      if (!user) return;
-
-      const { data: userData, error: userError } = await createUser({
-        firstName: startCase(firstName),
-        lastName: startCase(lastName),
-        email: email,
-        userId: user.id,
-      });
-
-      if (!userData || userError) {
+      if (!data.user) {
         setRegisterState((state) => ({
           ...state,
           error: true,
-          errorMessage: userError,
+          errorMessage: "no user retrieved",
+          loading: false,
         }));
-        setRegisterState((state) => ({ ...state, loading: false }));
-
         return;
       }
 
-      console.log(userError);
-
       if (!callbackUrl) {
-        router.push(`/dashboard/${userData[0].user_id}`);
+        router.push(`/dashboard/${data.user.id}`);
         return;
       }
 
@@ -129,126 +119,118 @@ const RegisterForm = () => {
   };
   return (
     <>
-      <VStack alignItems="center" justifyContent="center" minHeight="100dvh">
-        <Card.Root
-          width={{
-            base: "90%",
-            sm: "500px",
+      <VStack
+        alignItems="stretch"
+        justifyContent="center"
+        minHeight="100dvh"
+        maxW="500px"
+        minW="360px"
+      >
+        <form
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
           }}
-          p={{
-            base: "0rem",
-            sm: ".5rem",
-          }}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <Card.Header>
-            <Card.Title fontWeight={700}>Sign up</Card.Title>
-          </Card.Header>
-          <Card.Body>
-            <form
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
+          <VStack alignItems="stretch">
+            <Heading size="2xl" fontWeight={700}>
+              Sign up
+            </Heading>
+            <VStack alignItems="flex-start">
+              <Text>First Name</Text>
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field }) => <Input size="2xl" {...field} />}
+                rules={{
+                  required: "First name is required",
+                }}
+              />
+            </VStack>
+            <FormError error={errors} field="firstName" />
+            <VStack alignItems="flex-start">
+              <Text>Last Name</Text>
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field }) => <Input size="2xl" {...field} />}
+                rules={{
+                  required: "Last name is required",
+                }}
+              />
+            </VStack>
+            <FormError error={errors} field="lastName" />
+
+            <VStack alignItems="flex-start">
+              <Text>Email</Text>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => <Input size="2xl" {...field} />}
+                rules={{
+                  required: "Email name is required",
+                }}
+              />
+              <FormError error={errors} field="email" />
+            </VStack>
+            <VStack alignItems="flex-start">
+              <Text>Password</Text>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => <PasswordInput size="2xl" {...field} />}
+                rules={{
+                  required: "Password  is required",
+                }}
+              />
+              <FormError error={errors} field="password" />
+            </VStack>
+
+            <VStack alignItems="flex-start">
+              <Text>Confirm Password</Text>
+              <Controller
+                name="confirmPassword"
+                control={control}
+                render={({ field }) => <PasswordInput size="2xl" {...field} />}
+                rules={{
+                  required: "Password confirmation is required",
+                }}
+              />
+              <FormError error={errors} field="confirmPassword" />
+              {password && <Text color="red">Passwords doesnt match</Text>}
+              {registerState.error && (
+                <Text color="red"> {registerState.errorMessage} </Text>
+              )}
+            </VStack>
+            <Button
+              size="2xl"
+              _active={{
+                bgColor: "#F7F7F7",
+                color: "black",
+                transform: "scale(0.95)",
               }}
-              action=""
-              onSubmit={handleSubmit(onSubmit)}
+              transition="all .1s ease-in-out"
+              fontWeight="bold"
+              type="submit"
+              disabled={!isValid}
             >
-              <VStack alignItems="stretch" gap="1rem">
-                <VStack alignItems="flex-start">
-                  <Text>First Name</Text>
-                  <Controller
-                    name="firstName"
-                    control={control}
-                    render={({ field }) => <Input {...field} />}
-                    rules={{
-                      required: "First name is required",
-                    }}
-                  />
-                </VStack>
-                <FormError error={errors} field="firstName" />
-                <VStack alignItems="flex-start">
-                  <Text>Last Name</Text>
-                  <Controller
-                    name="lastName"
-                    control={control}
-                    render={({ field }) => <Input {...field} />}
-                    rules={{
-                      required: "Last name is required",
-                    }}
-                  />
-                </VStack>
-                <FormError error={errors} field="lastName" />
-
-                <VStack alignItems="flex-start">
-                  <Text>Email</Text>
-                  <Controller
-                    name="email"
-                    control={control}
-                    render={({ field }) => <Input {...field} />}
-                    rules={{
-                      required: "Email name is required",
-                    }}
-                  />
-                  <FormError error={errors} field="email" />
-                </VStack>
-                <VStack alignItems="flex-start">
-                  <Text>Password</Text>
-                  <Controller
-                    name="password"
-                    control={control}
-                    render={({ field }) => <PasswordInput {...field} />}
-                    rules={{
-                      required: "Password  is required",
-                    }}
-                  />
-                  <FormError error={errors} field="password" />
-                </VStack>
-
-                <VStack alignItems="flex-start">
-                  <Text>Confirm Password</Text>
-                  <Controller
-                    name="confirmPassword"
-                    control={control}
-                    render={({ field }) => <PasswordInput {...field} />}
-                    rules={{
-                      required: "Password confirmation is required",
-                    }}
-                  />
-                  <FormError error={errors} field="confirmPassword" />
-                  {password && <Text color="red">Passwords doesnt match</Text>}
-                  {registerState.error && (
-                    <Text color="red"> {registerState.errorMessage} </Text>
-                  )}
-                </VStack>
-                <Button
-                  size="xl"
-                  _active={{
-                    bgColor: "#F7F7F7",
-                    color: "black",
-                    transform: "scale(0.95)",
-                  }}
-                  transition="all .1s ease-in-out"
-                  fontWeight="bold"
-                  type="submit"
-                  disabled={!isValid}
-                >
-                  Sign up {registerState.loading && <Spinner />}
-                </Button>
-              </VStack>
-              <p>{authError}</p>
-              <Link href="/login">
-                <Text
-                  _active={{
-                    textDecoration: "underline",
-                  }}
-                  fontWeight={600}
-                >
-                  Already have an account ?
-                </Text>
-              </Link>
-            </form>
-          </Card.Body>
-        </Card.Root>
+              Sign up {registerState.loading && <Spinner />}
+            </Button>
+          </VStack>
+          <p>{authError}</p>
+          <Link href="/login">
+            <Text
+              _active={{
+                textDecoration: "underline",
+              }}
+              fontWeight={600}
+            >
+              Already have an account ?
+            </Text>
+          </Link>
+        </form>
       </VStack>
     </>
   );

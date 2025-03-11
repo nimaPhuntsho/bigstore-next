@@ -42,6 +42,8 @@ export const callFetch = async <TSchema extends Schema>({
           status: response.status,
         };
       }
+
+      // await new Promise((resolve) => setTimeout(resolve, 4000));
       return {
         data: parsedResponse.data,
         success: true as const,

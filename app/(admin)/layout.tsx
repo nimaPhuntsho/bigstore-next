@@ -1,3 +1,13 @@
+import { Metadata } from "next";
+import Header from "./components/AdminHeader";
+import { Provider } from "@/components/ui/provider";
+import { QueryProvider } from "@/components/custom/QueryProvider";
+
+export const metadata: Metadata = {
+  title: "Admin",
+  description: "Admin of bigstore",
+};
+
 export default function AdminLayout({
   children,
 }: {
@@ -5,7 +15,18 @@ export default function AdminLayout({
 }) {
   return (
     <>
-      <main>{children}</main>
+      <html lang="en" suppressHydrationWarning>
+        <body>
+          <main>
+            <QueryProvider>
+              <Provider>
+                <Header />
+                {children}
+              </Provider>
+            </QueryProvider>
+          </main>
+        </body>
+      </html>
     </>
   );
 }
