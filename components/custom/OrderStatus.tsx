@@ -70,6 +70,9 @@ const OrderStatus = ({ customerName }: Props) => {
             by email once your order has been shipped. Please contact us if you
             have any questions regarding your order.
           </Text>
+          <Text fontWeight={600}>
+            You’ll receive a confirmation email shortly regarding your order.{" "}
+          </Text>
           <HStack>
             <Link href="/contact">
               <Button

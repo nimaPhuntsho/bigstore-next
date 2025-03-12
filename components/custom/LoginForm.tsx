@@ -56,7 +56,7 @@ const Login = () => {
       const { mode } = development;
 
       const { success, data: signInData } = await callFetch({
-        endpoint: `${mode.production}/api/v1/signIn`,
+        endpoint: `${mode.local}/api/v1/signIn`,
         method: "POST",
         body: data,
         schema: z.object({
@@ -122,7 +122,7 @@ const Login = () => {
                 <Controller
                   name="email"
                   control={control}
-                  render={({ field }) => <Input size="2xl" {...field} />}
+                  render={({ field }) => <Input size="xl" {...field} />}
                   rules={{
                     required: "Email is required",
                   }}
@@ -133,16 +133,14 @@ const Login = () => {
                 <Controller
                   name="password"
                   control={control}
-                  render={({ field }) => (
-                    <PasswordInput size="2xl" {...field} />
-                  )}
+                  render={({ field }) => <PasswordInput size="xl" {...field} />}
                   rules={{
                     required: "Password is required",
                   }}
                 />
               </VStack>
               <Button
-                size="2xl"
+                size="xl"
                 _active={{
                   bgColor: "#F7F7F7",
                   color: "black",

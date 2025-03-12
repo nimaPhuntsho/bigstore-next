@@ -143,7 +143,7 @@ const RegisterForm = () => {
               <Controller
                 name="firstName"
                 control={control}
-                render={({ field }) => <Input size="2xl" {...field} />}
+                render={({ field }) => <Input size="xl" {...field} />}
                 rules={{
                   required: "First name is required",
                 }}
@@ -155,7 +155,7 @@ const RegisterForm = () => {
               <Controller
                 name="lastName"
                 control={control}
-                render={({ field }) => <Input size="2xl" {...field} />}
+                render={({ field }) => <Input size="xl" {...field} />}
                 rules={{
                   required: "Last name is required",
                 }}
@@ -168,7 +168,7 @@ const RegisterForm = () => {
               <Controller
                 name="email"
                 control={control}
-                render={({ field }) => <Input size="2xl" {...field} />}
+                render={({ field }) => <Input size="xl" {...field} />}
                 rules={{
                   required: "Email name is required",
                 }}
@@ -180,7 +180,7 @@ const RegisterForm = () => {
               <Controller
                 name="password"
                 control={control}
-                render={({ field }) => <PasswordInput size="2xl" {...field} />}
+                render={({ field }) => <PasswordInput size="xl" {...field} />}
                 rules={{
                   required: "Password  is required",
                 }}
@@ -193,7 +193,7 @@ const RegisterForm = () => {
               <Controller
                 name="confirmPassword"
                 control={control}
-                render={({ field }) => <PasswordInput size="2xl" {...field} />}
+                render={({ field }) => <PasswordInput size="xl" {...field} />}
                 rules={{
                   required: "Password confirmation is required",
                 }}
@@ -205,7 +205,7 @@ const RegisterForm = () => {
               )}
             </VStack>
             <Button
-              size="2xl"
+              size="xl"
               _active={{
                 bgColor: "#F7F7F7",
                 color: "black",

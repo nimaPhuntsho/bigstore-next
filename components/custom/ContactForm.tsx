@@ -112,7 +112,7 @@ const Contact = () => {
                     name="fullName"
                     control={control}
                     render={({ field }) => (
-                      <Input {...field} placeholder="Full Name" />
+                      <Input {...field} size="xl" placeholder="Full Name" />
                     )}
                     rules={{
                       required: true,
@@ -126,7 +126,7 @@ const Contact = () => {
                     name="email"
                     control={control}
                     render={({ field }) => (
-                      <Input {...field} placeholder="Email" />
+                      <Input {...field} size="xl" placeholder="Email" />
                     )}
                     rules={{
                       required: true,
@@ -141,7 +141,7 @@ const Contact = () => {
                     name="phone"
                     control={control}
                     render={({ field }) => (
-                      <Input {...field} placeholder="Phone" />
+                      <Input {...field} size="xl" placeholder="Phone" />
                     )}
                     rules={{
                       required: true,

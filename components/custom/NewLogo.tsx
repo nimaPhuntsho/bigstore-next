@@ -1,19 +1,15 @@
-import { Heading, HStack, Icon } from "@chakra-ui/react";
+import { Heading, HStack, Icon, VStack } from "@chakra-ui/react";
+
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
-import { SiPrestashop } from "react-icons/si";
 
 const NewLogo = () => {
   return (
     <HStack>
       <Link href="/">
-        <HStack>
-          <Icon>
-            <SiPrestashop></SiPrestashop>
-          </Icon>
-          <Heading fontWeight="900">BIGSTORE</Heading>
-        </HStack>
+        <VStack>
+          <Heading fontWeight={900}>bigstore.</Heading>
+        </VStack>
       </Link>
     </HStack>
   );

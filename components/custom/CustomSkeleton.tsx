@@ -1,6 +1,6 @@
-import { Grid, HStack, Stack, VStack } from "@chakra-ui/react";
+import { Grid, HStack, Stack, VStack, Skeleton } from "@chakra-ui/react";
 import React from "react";
-import { SkeletonText, Skeleton } from "../ui/skeleton";
+import { SkeletonText } from "../ui/skeleton";
 
 const CustomSkeleton = () => {
   return (
@@ -15,9 +15,9 @@ const CustomSkeleton = () => {
           xl: "repeat(5, 1fr)", // 5 columns on extra-large screens
         }}
         gap="1rem"
-        padding={"1rem"}
+        padding="1rem"
       >
-        {Array.from({ length: 10 }).map((_, index) => (
+        {[...Array(10)].map((_, index) => (
           <Stack key={index} maxW="xs">
             <Skeleton height="200px" bg="gray.200" />
             <HStack width="full">

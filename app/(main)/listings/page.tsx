@@ -1,12 +1,13 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 import ProductCard from "@/components/custom/ProductCard";
-import { Grid, VStack } from "@chakra-ui/react";
+import { Grid, HStack, Skeleton, Stack, VStack } from "@chakra-ui/react";
 import { Metadata } from "next";
 import Pagination from "@/components/custom/Pagination";
 import { InternalApiSchema } from "@/app/api/v1/products/schema";
 import { callFetch } from "@/app/util/fetch";
 import CustomSkeleton from "@/components/custom/CustomSkeleton";
+import { SkeletonCircle } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Products",
@@ -35,24 +36,22 @@ export default async function Listings({ searchParams }: Props) {
   return (
     <main>
       <VStack padding="2rem 0">
-        <Suspense fallback="loading ... products">
-          <Grid
-            templateColumns={{
-              base: "repeat(2, 1fr)", // 1 column on mobile
-              sm: "repeat(2, 1fr)", // 2 columns on small screens
-              md: "repeat(3, 1fr)", // 3 columns on medium screens
-              lg: "repeat(3, 1fr)", // 4 columns on large screens
-              xl: "repeat(5, 1fr)", // 5 columns on extra-large screens
-            }}
-            gap="1rem"
-            placeItems="center"
-            alignItems="stretch"
-          >
-            {data.data.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </Grid>
-        </Suspense>
+        <Grid
+          templateColumns={{
+            base: "repeat(2, 1fr)", // 1 column on mobile
+            sm: "repeat(2, 1fr)", // 2 columns on small screens
+            md: "repeat(3, 1fr)", // 3 columns on medium screens
+            lg: "repeat(3, 1fr)", // 4 columns on large screens
+            xl: "repeat(5, 1fr)", // 5 columns on extra-large screens
+          }}
+          gap="1rem"
+          placeItems="center"
+          alignItems="stretch"
+        >
+          {data.data.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </Grid>
         <Pagination count={data.length} dafaultPage={1} pageSize={10} />
       </VStack>
     </main>

@@ -68,7 +68,7 @@ const ResetPasswordDialog = ({}: Props) => {
   return (
     <DialogRoot placement={"center"}>
       <DialogTrigger asChild>
-        <Button size="2xl" fontWeight="bold" variant="outline">
+        <Button size="xl" fontWeight="bold" variant="outline">
           Reset password
         </Button>
       </DialogTrigger>
@@ -84,11 +84,12 @@ const ResetPasswordDialog = ({}: Props) => {
           <VStack alignItems="stretch">
             <form onSubmit={handleSubmit(onSubmit)}>
               <VStack alignItems="stretch">
-                <Text>Email</Text>
                 <Controller
                   name="email"
                   control={control}
-                  render={({ field }) => <Input {...field} />}
+                  render={({ field }) => (
+                    <Input placeholder="Email" size="xl" {...field} />
+                  )}
                   rules={{
                     required: "Email is required",
                   }}
@@ -96,9 +97,12 @@ const ResetPasswordDialog = ({}: Props) => {
 
                 <HStack justifyContent="end">
                   <DialogActionTrigger asChild>
-                    <Button variant="outline">Cancel</Button>
+                    <Button size="xl" variant="outline">
+                      Cancel
+                    </Button>
                   </DialogActionTrigger>
                   <Button
+                    size="xl"
                     _active={{
                       bgColor: "#F7F7F7",
                       color: "black",
