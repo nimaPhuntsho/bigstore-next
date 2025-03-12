@@ -47,7 +47,6 @@ export async function signUpUser({
   });
 
   console.log(userError);
-  console.log(userData);
 
   if (!supbaseAdmin) {
     return {
