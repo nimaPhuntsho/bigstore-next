@@ -9,6 +9,7 @@ import {
   VStack,
   Text,
   Box,
+  HStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
@@ -37,7 +38,7 @@ const HamburgerMenu = ({ userId }: Props) => {
           w="100%"
           h="100%"
           zIndex="1"
-          color={"white"}
+          color="white"
           alignItems="stretch"
           overflow="hidden"
           gap="1rem"
@@ -87,14 +88,27 @@ const HamburgerMenu = ({ userId }: Props) => {
                 Account
               </Text>
             </Link>
+            <Link onClick={onToggle} href="/about">
+              <Text
+                _active={{
+                  textDecoration: "underline",
+                }}
+                fontSize="4xl"
+                alignSelf="start"
+                padding=".5rem"
+              >
+                About
+              </Text>
+            </Link>
           </VStack>
           <Link href="/login">
             <Button
-              variant="outline"
-              colorPalette="red"
               fontWeight={800}
-              size="xl"
+              size="2xl"
+              bgColor="white"
+              color="black"
               onClick={onToggle}
+              w="100%"
             >
               Login
             </Button>

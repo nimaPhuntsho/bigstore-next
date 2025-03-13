@@ -12,7 +12,10 @@ export default async function Footer() {
         alignItems="start"
         width="100%"
         justifyContent="space-evenly"
-        p="4rem"
+        p={{
+          base: "2rem",
+          md: "4rem",
+        }}
         direction={{
           base: "column",
           md: "row",
