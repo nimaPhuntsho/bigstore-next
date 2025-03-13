@@ -134,8 +134,8 @@ const RegisterForm = () => {
           }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <VStack alignItems="stretch">
-            <Heading size="2xl" fontWeight={700}>
+          <VStack gap="1rem" alignItems="stretch">
+            <Heading size="2xl" fontWeight={900}>
               Sign up
             </Heading>
             <VStack alignItems="flex-start">

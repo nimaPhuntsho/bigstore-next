@@ -114,7 +114,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack alignItems="stretch">
             <VStack alignItems="stretch" gap="1rem">
-              <Heading size="2xl" fontWeight={700}>
+              <Heading size="2xl" fontWeight={900}>
                 Sign in
               </Heading>
               <VStack alignItems="start" width="100%">

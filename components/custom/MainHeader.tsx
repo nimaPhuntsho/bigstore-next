@@ -38,6 +38,12 @@ const MainHeader = ({ userName, userId }: Props) => {
                 Contact
               </Text>
             </Link>
+
+            <Link href="/about">
+              <Text fontWeight={pathName === "/about" ? "900" : "700"}>
+                About
+              </Text>
+            </Link>
           </HStack>
           <HStack gap={".3rem"}>
             <Link href="/cart">
@@ -78,6 +84,11 @@ const MainHeader = ({ userName, userId }: Props) => {
               <Link href="/contact">
                 <Text fontWeight={pathName === "/contact" ? "900" : "700"}>
                   Contact
+                </Text>
+              </Link>
+              <Link href="/about">
+                <Text fontWeight={pathName === "/about" ? "900" : "700"}>
+                  About
                 </Text>
               </Link>
             </HStack>
