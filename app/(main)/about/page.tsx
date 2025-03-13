@@ -61,7 +61,7 @@ const About = () => {
               authentication system requiring users to sign up before placing
               orders. Upon ordering, users receive a confirmation email via
               MailerSend. They can also log in to manage their orders, including
-              canceling them. This is a fake store—nothing is real, and it's
+              canceling them. This is a fake store—nothing is real, and its
               purely for demonstration purposes.
             </Text>
           </VStack>
