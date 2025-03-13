@@ -1,7 +1,8 @@
-import { Heading, VStack, Text, HStack, Icon } from "@chakra-ui/react";
+import { Heading, VStack, Text, HStack, Icon, Box } from "@chakra-ui/react";
 import React from "react";
 
 import { Noto_Sans } from "next/font/google";
+import Image from "next/image";
 
 const roboto = Noto_Sans({
   weight: "500",
@@ -40,15 +41,34 @@ const About = () => {
   ];
   return (
     <>
-      <VStack alignItems="center">
-        <VStack
-          minH="100dvh"
-          maxW={1000}
-          p="1rem"
-          alignItems="start"
-          justifyContent="center"
-          gap="1rem"
-        >
+      <VStack
+        bgImage="url('/images/about-bg.jpg')"
+        bgSize="cover"
+        height="50dvh"
+        gap={0}
+        bgPos="center"
+        justifyContent="end"
+        alignItems="end"
+        color="white"
+      >
+        <Heading p={16} size="5xl" fontWeight={900}>
+          ABOUT THE
+          <span style={{ color: "#BF3131", textDecoration: "underline" }}>
+            WEBSITE
+          </span>
+        </Heading>
+      </VStack>
+      <VStack
+        bgColor="black"
+        p={{
+          base: "2rem",
+          md: "4rem",
+        }}
+        justifyContent="center"
+        gap="1rem"
+        color="white"
+      >
+        <VStack alignItems="start" maxW={600}>
           <VStack alignItems="start">
             <Heading size="lg" fontWeight={700}>
               About the website
